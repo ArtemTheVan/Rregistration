@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/mods/military_staff/ui">
+        <file>qml/PageTemplate.qml</file>
+        <file>qml/PathPanelDelegate.qml</file>
+        <file>qml/StaffDialog.qml</file>
+        <file>qml/StaffForm.qml</file>
+        <file>qml/StaffItemDelegate.qml</file>
+        <file>qml/StaffPage.qml</file>
+        <file>qml/StaffStructureDialog.qml</file>
+        <file>qml/StaffStructurePage.qml</file>
+        <file>qml/StructItemDelegate.qml</file>
+        <file>qml/StructureForm.qml</file>
+        <file>qml/StructureFrom.qml</file>
+        <file>qml/ToolPanel.qml</file>
+    </qresource>
+</RCC>

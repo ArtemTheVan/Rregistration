@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/mods/registration/ui">
+        <file>qml/RegistrationForm.qml</file>
+        <file>qml/PageHeader.qml</file>
+        <file>qml/PageFooter.qml</file>
+        <file>qml/PathDelegate.qml</file>
+        <file>qml/PathPanel.qml</file>
+        <file>qml/StaffItemDelegate.qml</file>
+        <file>qml/user/MenuPage.qml</file>
+        <file>qml/user/ProgressPage.qml</file>
+        <file>qml/user/RegistrationCardPage.qml</file>
+        <file>qml/user/StaffPage.qml</file>
+        <file>qml/user/UserView.qml</file>
+        <file>qml/user/RegistrationTablePage.qml</file>
+        <file>qml/registrar/RegistrarView.qml</file>
+        <file>qml/registrar/RegistrationTablePage.qml</file>
+        <file>qml/registrar/StaffEditPage.qml</file>
+        <file>qml/registrar/RegistrationQueriesPage.qml</file>
+        <file>qml/user/RegistrationInfoPage.qml</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MilitaryStaff version="1.0" type="staff">
+    <!-- Первый мотострелковый взвод {{{ -->
+    <Division name="МСО" type="взвод" num="1">
+        <Commander rank="Младший сержант">
+            <address>e80::a00:27ff:fe27:2baf</address>
+        </Commander>
+        <Soldier name="СТС" duty="Старший стрелок">
+            <address>::1</address>
+        </Soldier>
+        <Soldier name="С" duty="Стрелок">
+            <address>e80::a00:27ff:fe27:2bb0</address>
+        </Soldier>
+        <Soldier name="П" duty="Пулеметчик">
+            <address>e80::a00:27ff:fe27:2bb1</address>
+        </Soldier>
+        <Soldier name="Г" duty="Гранатометчик">
+            <address>e80::a00:27ff:fe27:2bb2</address>
+        </Soldier>
+        <Soldier name="ПГ" duty="Помощник гранатометчика">
+            <address>e80::a00:27ff:fe27:2bb3</address>
+        </Soldier>
+        <Soldier name="Н" duty="Наводчик">
+            <address>e80::a00:27ff:fe27:2bb4</address>
+        </Soldier>
+        <Soldier name="В" duty="Водитель">
+            <address>e80::a00:27ff:fe27:2bb5</address>
+        </Soldier>
+    </Division>
+    <!-- }}} Первый мотострелковый взвод -->
+</MilitaryStaff>

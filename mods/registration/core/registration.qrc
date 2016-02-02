@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/mods/registration">
+        <file>conf/registration_rules.conf</file>
+        <file>conf/registration_table.xml</file>
+        <file>conf/registrar_list.json</file>
+        <file>conf/registration_config.xml</file>
+    </qresource>
+</RCC>

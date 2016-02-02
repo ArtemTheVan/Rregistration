@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MilitaryStaff version="1.0" type="decription">
+    <DivisionsKeys>
+        <division key="МСБР" type="бригада" branch="пехота">Мотострелковая бригада</division>
+        <division key="МСП" type="полк" branch="пехота">Мотострелковый полк</division>
+        <division key="МСБ" type="батальон" branch="пехота">Мотострелковый батальон</division>
+        <division key="МСР" type="рота" branch="пехота">Мотострелковая рота</division>
+        <division key="МСО" type="отделение" branch="пехота">Мотострелковое отделение</division>
+        <division key="УПР" type="управление" branch="">Управление</division>
+        <division key="ГСАДН" type="дивизион" branch="артиллерия">Гаубично-самоходный артиллерийский дивизион</division>
+        <division key="ГСАБАТР" type="батарея" branch="артиллерия">Гаубично-самоходная артиллерийская батарея</division>
+        <division key="ГСАВ" type="взвод" branch="артиллерия">Гаубично-самоходный артиллерийский взвод</division>
+        <division key="ВУДН" type="взвод" branch="">Взвод управления дивизионом</division>
+        <division key="ВУК" type="взвод" branch="">Взвод управления командира</division>
+        <division key="ВО" type="взвод" branch="тыл">Взвод обеспечения</division>
+        <division key="ВС" type="взвод" branch="связь">Взвод связи</division>
+        <division key="ВУ" type="взвод" branch="">Взвод управления</division>
+        <division key="АО" type="отделение" branch="автомобильные">Автомобильное отделение</division>
+        <division key="ОС" type="отделение" branch="связь">Отделение связи</division>
+        <division key="ОТО" type="отделение" branch="инженерные">Отделение технического обслуживания</division>
+        <division key="ХОЗО" type="отделение" branch="тыл">Хозяйственное отделение</division>        
+        <division key="ОУК" type="отделение" branch="">Отделение управления командира</division>
+        <division key="ОУ" type="отделение" branch="">Отделение управления</division>
+        <division key="ОАР" type="отделение" branch="артиллерия">Отделение артиллерийской разведки</division>
+        <division key="ОУК" type="отделение" branch="">Отделение управления командира</division>
+        <division key="ОУШ" type="отделение" branch="">Отделение управления штабом</division>
+        <division key="ОУКДН" type="отделение" branch="">Отделение управления командира дивизиона</division>
+        <division key="ОУШДН" type="отделение" branch="">Отделение управления штабом дивизиона</division>
+        <division key="ОУКБ" type="отделение" branch="">Отделение управления командира батальона</division>
+        <division key="ОУШБ" type="отделение" branch="">Отделение управления штабом батальона</division>
+    </DivisionsKeys>
+    <DutyKeys>
+        <duty key="К">Командир</duty>
+        <duty key="ЗК">Заместитель командира</duty>
+        <duty key="СТС">Старший стрелок</duty>
+        <duty key="С">Стрелок</duty>
+        <duty key="П">Пулеметчик</duty>
+        <duty key="Г">Гранатометчик</duty>
+        <duty key="ПГ">Помощник гранатометчика</duty>
+        <duty key="Н">Наводчик</duty>
+        <duty key="В">Водитель</duty>
+        <duty key="ВМЕХ">Водитель-механик</duty>
+        <duty key="ВГ">Водитель-гранатометчик</duty>
+        <duty key="СВ">Старший водитель</duty>
+        <duty key="СВР">Старший водитель-радиотелефонист</duty>
+        <duty key="МЕХ">Механик</duty>
+        <duty key="МЕХРТ">Механик–радиотелефонист</duty>
+        <duty key="МЕХВЭК">Механик-водитель-электрик</duty>
+        <duty key="СМЕХ">Старший механик</duty>
+        <duty key="РТ">Радиотелефонист</duty>
+        <duty key="МР">Мастер</duty>
+        <duty key="МРГ">Мастер-гранатометчик</duty>
+    </DutyKeys>
+</MilitaryStaff>

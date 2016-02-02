@@ -1,0 +1,9 @@
+{
+    "created": 1427959529714,
+    "registrars": [        
+        { "address": "fe80::280:e102:1a:b8cd",   "role": "ЗК.1-МСО" },
+        { "address": "fe80::280:e102:1a:b8ce",   "role": "К.1-МСО"  },
+        { "address": "fe80::a00:27ff:fe27:2baf", "role": "К.2-МСВ.МСР.МСБ" },
+        { "address": "fe80::280:e102:1a:cd87",   "role": "К.1-МСВ.МСР.МСБ", "main": true }
+    ]
+}

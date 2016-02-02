@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE StaffStructure>
+<StaffRoot version="1.0">
+    <!-- Мотострелковый батальон {{{ -->
+    <Division name="МСБ" type="батальон">
+        <!-- Взвод обеспечения {{{ -->
+        <Division name="ВО" type="взвод">
+            <DivisionGroup name="АО" type="отделение" count="2">
+                <Soldier name="СВ" duty="Старший водитель"></Soldier>
+                <Soldier name="СВР" duty="Старший водитель-радиотелефонист"></Soldier>
+                <Soldier name="В" duty="Водитель" count="2"></Soldier>
+            </DivisionGroup>
+            <DivisionGroup name="ОТО" type="отделение" count="2">
+                <Soldier name="СМЕХ" duty="Старший механик"></Soldier>
+                <Soldier name="МР" duty="Мастер"></Soldier>
+                <Soldier name="МРГ" duty="Мастер-гранатометчик"></Soldier>
+                <Soldier name="ВМЕХ" duty="Водитель-механик"></Soldier>
+                <Soldier name="ВГ" duty="Водитель-гранатометчик"></Soldier>
+            </DivisionGroup>
+            <Division name="ХОЗО" type="отделение">
+                <Soldier name="СТПОВ" duty="Старший повар"></Soldier>
+                <Soldier name="ПОВ" duty="Повар" count="2"></Soldier>
+                <Soldier name="ПОВПЕК" duty="Повар-пекарь" count="2"></Soldier>
+                <Soldier name="В" duty="Водитель" count="3"></Soldier>
+            </Division>
+            <Division name="БАНЯ" type="баня">
+                <Commander name="Начальник бани" duty="Санитарный инструктор"></Commander>
+                <Soldier name="СТДР" duty="Старший дезинфектор"></Soldier>
+                <Soldier name="ВПК" duty="Водитель–паропроводчик"></Soldier>
+                <Soldier name="ВДР" duty="Водитель-дезинфектор" count="2"></Soldier>
+            </Division>
+        </Division>
+        <!-- }}} Взвод обеспечения -->
+        <!-- Баня {{{ --><!-- }}} Баня -->
+        <Division name="МСР" type="рота">
+            <Soldier name="ЗК" duty="Заместитель командира"></Soldier>
+            <Soldier name="В" duty="Техник"></Soldier>
+            <Soldier name="В" duty="Водитель"></Soldier>
+            <Soldier name="Н" duty="Наводчик"></Soldier>
+            <Soldier name="РТ" duty="Радиотелефонист"></Soldier>
+            <Soldier name="ОПБР" duty="Оператор ближней разведки"></Soldier>
+            <Soldier name="СТСА" duty="Старший санитар"></Soldier>
+            <!-- Мотострелковый взвод {{{ -->
+            <DivisionGroup name="МСВ" type="взвод" count="2" numeration="general">
+                <Soldier name="СН" duty="Снайпер"></Soldier>
+                <Soldier name="ССА" duty="Стрелок-санитар"></Soldier>
+                <!-- Мотострелковое отделение {{{ -->
+                <DivisionGroup name="МСО" type="отделение" count="3" numeration="continuous">
+                    <Soldier name="ЗК" duty="Заместитель командира"></Soldier>
+                    <Soldier name="СТС" duty="Старший стрелок"></Soldier>
+                    <Soldier name="С" duty="Стрелок"></Soldier>
+                    <Soldier name="П" duty="Пулеметчик"></Soldier>
+                    <Soldier name="Г" duty="Гранатометчик"></Soldier>
+                    <Soldier name="ПГ" duty="Помощник гранатометчика"></Soldier>
+                    <Soldier name="Н" duty="Наводчик"></Soldier>
+                    <Soldier name="В" duty="Водитель"></Soldier>
+                </DivisionGroup>
+                <!-- }}} Мотострелковое отделение -->
+            </DivisionGroup>
+            <!-- }}} Мотострелковый взвод -->
+        </Division>
+        <!-- }}} Мотострелковая рота -->
+    </Division>
+    <!-- }}} Мотострелковый батальон -->
+</StaffRoot>

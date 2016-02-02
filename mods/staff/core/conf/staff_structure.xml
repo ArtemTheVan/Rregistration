@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE StaffStructure>
+<StaffStructure version="1.0">
+    <!-- Мотострелковая бригада {{{ -->
+    <Division type="бригада" name="МСБР">
+        <!-- Командир бригады -->
+        <Commander/>
+        <!-- Взвод связи {{{ -->
+        <Division name="ВС" type="взвод">
+            <DivisionGroup name="ОС" type="отделение" count="3">
+            </DivisionGroup>
+            <Division name="УПР" type="управление" numeration="general"></Division>
+        </Division>
+        <!-- }}} Взвод связи -->
+        <!-- Гаубично-самоходный артиллерийский дивизион {{{ -->
+        <DivisionGroup name="ГСАДН" type="дивизион" count="2">
+            <!-- Гаубично-самоходная артиллерийская батарея [3] => [1] {{{ -->
+            <DivisionGroup name="ГСАБАТР" type="батарея" count="1" numeration="general">
+                <!-- Взвод обеспечения {{{ -->
+                <Division name="ВО" type="взвод">                
+                    <DivisionGroup name="АО" type="отделение" count="2">
+                    </DivisionGroup>
+                    <Division name="ОТО" type="отделение"></Division>
+
+      <Division name="ХОЗО" type="отделение"></Division>
+                </Division>
+                <!-- }}} Взвод обеспечения -->
+                <!-- Взвод управления дивизионом {{{ -->
+                <Division name="ВУДН" type="взвод">
+                    <Division name="ОАР" type="отделение"></Division>
+                    <Division name="ОУ" type="отделение"></Division>
+                    <Division name="ОУКДН" type="отделение"></Division>
+                    <Division name="ОУШДН" type="отделение"></Division>
+                </Division>
+                <!-- }}} Взвод управления дивизионом -->
+                <Division name="ВУК" type="взвод">
+                    <Division name="ОУ" type="отделение"></Division>
+                    <Division name="ОУК" type="отделение"></Division>
+                </Division>
+                <DivisionGroup name="ГСАВ" type="взвод" count="2" numeration="general">
+                    <DivisionGroup name="ГСАО" type="отделение" count="3" numeration="general">
+                    </DivisionGroup>
+                </DivisionGroup>
+                <Division name="ОУСО" type="управление"></Division>
+                <Division name="УПР" type="управление"></Division>
+            </DivisionGroup>
+            <!-- }}} Гаубично-самоходная артиллерийская батарея -->
+            <Division name="УПР" type="управление"></Division>
+            <Division name="ШТАБ" type="штаб"></Division>
+        </DivisionGroup>
+        <!-- }}} Гаубично-самоходный артиллерийский дивизион -->
+        <!-- Мотострелковый батальон [3] => [1] {{{ -->
+        <DivisionGroup name="МСБ" type="батальон" count="1">
+            <!-- Взвод обеспечения {{{ -->
+            <Division name="ВО" type="взвод">
+                <Commander rank="" />
+                <DivisionGroup name="АО" type="отделение" count="2">
+                    <Commander rank="" />
+                    <Soldier name="СВ" duty="Старший водитель"></Soldier>
+                    <Soldier name="СВР" duty="Старший водитель-радиотелефонист"></Soldier>
+                    <!-- count="6" = "2" -->
+                    <Soldier name="В" duty="Водитель" count="2"></Soldier>
+                </DivisionGroup>
+                <Division name="ОТО" type="отделение">
+                    <Commander rank="" />
+                    <Soldier name="СМЕХ" duty="Старший механик"></Soldier>
+                    <Soldier name="МР" duty="Мастер"></Soldier>
+                    <Soldier name="МРГ" duty="Мастер-гранатометчик"></Soldier>
+                    <Soldier name="ВМЕХ" duty="Водитель-механик"></Soldier>
+                    <Soldier name="ВГ" duty="Водитель-гранатометчик"></Soldier>
+                </Division>
+                <Division name="ХОЗО" type="отделение">
+                    <Commander rank="" />
+                    <Soldier name="СТПОВ" duty="Старший повар"></Soldier>
+                    <Soldier name="ПОВ" duty="Повар" count="2"></Soldier>
+                    <Soldier name="ПОВПЕК" duty="Повар-пекарь" count="2"></Soldier>
+                    <Soldier name="В" duty="Водитель" count="3"></Soldier>
+                </Division>
+                <Division name="БАНЯ" type="баня">
+                    <Commander name="Начальник бани" duty="Санитарный инструктор"></Commander>
+                    <Soldier name="СТДР" duty="Старший дезинфектор"></Soldier>
+                    <Soldier name="ВПК" duty="Водитель–паропроводчик"></Soldier>
+                    <Soldier name="ВДР" duty="Водитель-дезинфектор" count="2"></Soldier>
+                </Division>
+            </Division>
+            <!-- }}} Взвод обеспечения -->
+            <!-- Взвод упраления {{{ -->
+            <Division name="ВУ" type="взвод">
+                <Commander duty="Начальник связи"></Commander>
+                <Division name="ОУКБ" type="отделение">
+                    <Commander rank="" ></Commander>
+                    <Soldier name="МЕХРТ" duty="Механик–радиотелефонист"></Soldier>
+                    <Soldier name="РТ" duty="Радиотелефонист"></Soldier>
+                    <Soldier name="МЕХВЭК" duty="Механик-водитель-электрик"></Soldier>
+                </Division>
+                <Division name="ОУШБ" type="отделение">
+                    <Commander rank="" ></Commander>
+                    <Soldier name="МЕХРТ" duty="Механик–радиотелефонист"></Soldier>
+                    <Soldier name="РТ" duty="Радиотелефонист"></Soldier>
+                    <Soldier name="МЕХВЭК" duty="Механик-водитель-электрик"></Soldier>
+                </Division>
+                <Division name="ОС" type="отделение">
+                    <Commander rank="" ></Commander>
+                    <Soldier name="РТГ" duty="Радиотелефонист-гранатометчик"></Soldier>
+                    <Soldier name="МЕХ" duty="Механик"></Soldier>
+                    <Soldier name="Н" duty="Наводчик"></Soldier>
+                    <Soldier name="МЕХВЭК" duty="Механик-водитель-электрик"></Soldier>
+                </Division>
+            </Division>
+            <!-- }}} Взвод управления -->
+            <!-- Мотострелковая рота {{{ -->
+            <DivisionGroup name="МСР" type="рота" count="1" numeration="general">
+                <DivisionGroup name="МСВ" type="взвод" count="2" numeration="general">
+                    <DivisionGroup name="МСО" type="отделение" count="3" numeration="continuous">
+                        <Commander rank="Младший сержант"></Commander>
+                        <Soldier name="ЗК" duty="Заместитель командира отделения"></Soldier>
+                        <Soldier name="СТС" duty="Старший стрелок"></Soldier>
+                        <Soldier name="С" duty="Стрелок"></Soldier>
+                        <Soldier name="П" duty="Пулеметчик"></Soldier>
+                        <Soldier name="Г" duty="Гранатометчик"></Soldier>
+                        <Soldier name="ПГ" duty="Помощник гранатометчика"></Soldier>
+                        <Soldier name="Н" duty="Наводчик"></Soldier>
+                        <Soldier name="В" duty="Водитель"></Soldier>
+                    </DivisionGroup>
+                </DivisionGroup>
+            </DivisionGroup>
+            <!-- }}} Мотострелковая рота -->
+        </DivisionGroup>
+        <!-- }}} Мотострелковый батальон -->
+    </Division>
+    <!-- }}} Мотострелковая бригада -->    
+</StaffStructure>

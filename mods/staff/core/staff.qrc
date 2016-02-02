@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/mods/staff">
+        <file>conf/staff_structure.xml</file>
+        <file>conf/staff_info.xml</file>
+        <file>conf/staff_structure_gsadn.xml</file>
+        <file>conf/staff_structure_msb.xml</file>
+    </qresource>
+</RCC>

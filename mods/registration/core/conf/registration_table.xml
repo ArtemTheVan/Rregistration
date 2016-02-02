@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE RegistrationTable>
+<!-- Это файл-пример таблицы регистрации. Сама таблица хранится в БД и управляется через SQLite -->
+<RegistrationTable time="1427959938400">
+    <Record time="1427959938400">
+        <role>К.1-МСО.2-МСВ.1-МСР.1-МСБ</role>
+        <name>Петров Иван Иванович</name>
+        <address>fe80::280:e102:1a:b8cd</address>
+        <streetAddress>Москва, ул. Панфилова, 13</streetAddress>
+        <birthday>1426919918200</birthday>
+        <speciality>3627834ИП</speciality>
+        <rankIndex>15</rankIndex>
+    </Record>
+</RegistrationTable>
