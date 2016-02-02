@@ -1,6 +1,7 @@
 #ifndef INTERFACE_SINGLETON_H
 #define INTERFACE_SINGLETON_H
 
+#include "global1.h"
 
 #ifndef I_SINGLETON
 #define I_SINGLETON(Class) friend class ISingleton<Class>;

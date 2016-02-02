@@ -1,6 +1,7 @@
 #include "varianttable.h"
 #include <QDebug>
 #include <QSqlQuery>
+#include <QSqlRecord>
 
 
 
@@ -11,7 +12,7 @@ void VariantTable::insert(QVariantMap value)
     QVariantList col_values;
     QString keyVal;
 
-    for( QString key: value.keys()) {
+    foreach (const QString &key, value.keys()) {
         if (!blueprint.contains(key)) {
             qCritical("Localstorage:  variant table %s. Tried to insert an object that does not match the blueprint.",
                       qPrintable(name));
@@ -35,7 +36,7 @@ void VariantTable::insert(QVariantMap value)
 
     QSqlQuery query(db);
     query.prepare(cmd);
-    for (QVariant col_value: col_values) {
+    foreach (QVariant col_value, col_values) {
         query.addBindValue(col_value);
     }
     qDebug() << cmd << query.exec();
@@ -51,8 +52,7 @@ bool VariantTable::updateRecord(const QVariantMap &value, const QString &conditi
     QString cmd = QString("UPDATE %1 SET ").arg(name);
     QString val_str, valueKey;
 
-    for( const QString& key: value.keys() )
-    {
+    foreach (const QString& key, value.keys()) {
         if (!blueprint.contains(key)) {
             qCritical("Localstorage:  variant table %s. Tried to insert an object that does not match the blueprint.",
                       qPrintable(name));
@@ -74,7 +74,7 @@ bool VariantTable::updateRecord(const QVariantMap &value, const QString &conditi
 
     QSqlQuery query(db);
     query.prepare(cmd);
-    for(QVariant col_value: col_values) {
+    foreach (QVariant col_value, col_values) {
         query.addBindValue(col_value);
     }
 
@@ -98,20 +98,28 @@ QList<QVariantMap> VariantTable::select(QString condition)
     QSqlQuery query(db);
     query.exec(cmd);
 
-
     while (query.next())
     {
         QVariantMap entry;
-        for( const QString& col_name: col_names )
+        foreach (QString col_name, col_names)
         {
             valueKey = blueprint.value(col_name).toString();
             QVariant actual_value;
 
-            if( valueKey.contains("binary", Qt::CaseInsensitive) || valueKey.contains("BLOB", Qt::CaseInsensitive) ) {
-                actual_value = readSerialized(query.value(col_name).toByteArray());
-            }
-            else {
+            if( valueKey.contains("binary", Qt::CaseInsensitive) || valueKey.contains("BLOB", Qt::CaseInsensitive) )
+            {
+#if QT_VERSION >= 0x050000
+                actual_value = readSerialized(QVariant(query.value(col_name)).toByteArray());
+#else
+                actual_value = readSerialized(QVariant(query.record().indexOf(col_name)).toByteArray());
+#endif
+            } else
+            {
+#if QT_VERSION >= 0x050000
                 actual_value = query.value(col_name);
+#else
+                actual_value = query.record().indexOf(col_name);
+#endif
             }
             entry.insert(col_name, actual_value);
         }
@@ -163,7 +171,7 @@ void VariantTable::createTable()
     QString keyVal;
     QStringList keys = blueprint.keys();
 
-    for (auto &key: keys)
+    foreach (QString key, keys)
     {
         keyVal = blueprint.value(key).toString();
 

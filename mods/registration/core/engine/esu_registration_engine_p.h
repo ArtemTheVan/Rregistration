@@ -33,7 +33,7 @@ class ESURegistrationEnginePrivate
 
 public:
     ESURegistrationEnginePrivate(ESURegistrationEngine* parent = nullptr):
-        q_ptr(parent), base(nullptr), ui(nullptr)
+        q_ptr(parent), base(nullptr)/*, ui(nullptr)*/
       , fileRules(":/mods/registration/conf/registration_rules.conf")
       , fileRegistrarList("/media/card/esutz/registration/registrar_list.json")
       , isRegistered(false), isRegistrar(false), profileName(""), profileAddress(QHostAddress::Null)
@@ -55,8 +55,13 @@ public:
         QObject::connect( &net, &RegistrationProtoInterfaceNET::registrationMessageReceived,
                           q, &ESURegistrationEngine::onReceivedData, Qt::QueuedConnection );
 #endif
+#ifdef QT4_ETU
+        QObject::connect( q, SIGNAL(execUserRegistration()),
+                          q, SLOT(processUserRegistration()), Qt::QueuedConnection );
+#else
         QObject::connect( q, &ESURegistrationEngine::execUserRegistration,
                           q, &ESURegistrationEngine::processUserRegistration, Qt::QueuedConnection );
+#endif
 
         m_tableSceme["role"]        = "VARCHAR(255) NOT NULL PRIMARY KEY"; // unique
         m_tableSceme["address"]     = "VARCHAR(255) NOT NULL UNIQUE";
@@ -75,7 +80,7 @@ public:
 public:
     ESURegistrationEngine   *q_ptr;
     ESURegistration         *base;
-    ESURegistrationUI       *ui;
+//    ESURegistrationUI       *ui;
 
     QString fileRules;
     QString fileRegistrarList;

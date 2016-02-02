@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/mods/registration/ui">
-        <file>qml/UserRegistrationForm.qml</file>
-        <file>qml/RegistrationNotifyForm.qml</file>
-        <file>qml/RegistrarForm.qml</file>
-        <file>qml/Button.qml</file>
-    </qresource>
-</RCC>

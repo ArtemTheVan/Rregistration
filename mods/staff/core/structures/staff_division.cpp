@@ -451,8 +451,8 @@ StaffSoldier StaffDivision::getSoldier(const QString &name)
     CHECK_D_RET(d_ptr, StaffSoldier());
     Q_D(StaffDivision);
 
-    StaffSoldierList::const_iterator it = d->soldiers.cbegin();
-    while (it != d->soldiers.cend()) {
+    StaffSoldierList::const_iterator it = d->soldiers.begin();
+    while (it != d->soldiers.end()) {
         if( it->name() == name || it->nameFull() == name ) {
             return(*it);
         }
@@ -468,8 +468,8 @@ StaffSoldier StaffDivision::getSoldier(const QHostAddress &address)
     CHECK_D_RET(d_ptr, StaffSoldier());
     Q_D(StaffDivision);
 
-    StaffSoldierList::const_iterator it = d->soldiers.cbegin();
-    while (it != d->soldiers.cend()) {
+    StaffSoldierList::const_iterator it = d->soldiers.begin();
+    while (it != d->soldiers.end()) {
         if( it->netAddress() == address ) {
             return(*it);
         }
@@ -487,8 +487,8 @@ StaffSoldierList StaffDivision::getSoldiers(staff::UnitDuty duty)
     CHECK_D_RET(d_ptr, result);
     Q_D(StaffDivision);
 
-    StaffSoldierList::const_iterator it = d->soldiers.cbegin();
-    while (it != d->soldiers.cend()) {
+    StaffSoldierList::const_iterator it = d->soldiers.begin();
+    while (it != d->soldiers.end()) {
         if( it->duty() == duty ) {
             result.append(*it);
         }
@@ -617,8 +617,8 @@ StaffDivision StaffDivision::getDivision(const StaffCommander &commander)
     CHECK_D_RET(d_ptr, StaffDivision());
     Q_D(StaffDivision);
 
-    StaffDivisionList::const_iterator it = d->divisions.cbegin();
-    while (it != d->divisions.cend()) {
+    StaffDivisionList::const_iterator it = d->divisions.begin();
+    while (it != d->divisions.end()) {
         StaffCommander c = it->commander();
         if( c == commander ) {
             return(*it);
@@ -635,8 +635,8 @@ StaffDivision StaffDivision::getDivision(const StaffDivision &division)
     CHECK_D_RET(d_ptr, StaffDivision());
     Q_D(StaffDivision);
 
-    StaffDivisionList::const_iterator it = d->divisions.cbegin();
-    while (it != d->divisions.cend()) {
+    StaffDivisionList::const_iterator it = d->divisions.begin();
+    while (it != d->divisions.end()) {
         if( it->name() == division.name() && it->nameFull() == division.nameFull() ) {
             return(*it);
         }
@@ -654,8 +654,8 @@ StaffDivisionList StaffDivision::getDivisions(staff::DivisionType type)
     CHECK_D_RET(d_ptr, result);
     Q_D(StaffDivision);
 
-    StaffDivisionList::const_iterator it = d->divisions.cbegin();
-    while (it != d->divisions.cend()) {
+    StaffDivisionList::const_iterator it = d->divisions.begin();
+    while (it != d->divisions.end()) {
         if( it->type() == type ) {
             result.append(*it);
         }
@@ -682,7 +682,7 @@ int StaffDivision::calcStaffCount(staff::CountCategory cntCategory, staff::RankC
 
     int cnt = 0;
 
-    for(StaffDivision subdiv: divisions()){
+    foreach (StaffDivision subdiv, divisions()) {
         cnt += subdiv.countData(cntCategory, category);
     }
 

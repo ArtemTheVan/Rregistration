@@ -34,7 +34,7 @@ public:
     int         registrarCheckCount;
 
     QObject             *currentUiForm;
-    ESURegistrationUI   *ui;
+//    ESURegistrationUI   *ui;
 
     RegistrationUserInfo choosedData;
 

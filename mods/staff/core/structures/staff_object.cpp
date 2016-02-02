@@ -84,7 +84,11 @@ void StaffObject::create()
 void StaffObject::release()
 {
     if( d_ptr != nullptr ) {
+#if QT_VERSION >= 0x050000
         if( !d_ptr->ref.deref() || d_ptr->ref.load() <= 1 )
+#else
+        if( !d_ptr->ref.deref() || int(d_ptr->ref) <= 1 )
+#endif
             delete d_ptr;
     }
 }
@@ -105,10 +109,18 @@ void StaffObject::setNull()
 {
     CHECK_D(d_ptr);
 
+#if QT_VERSION >= 0x050000
     if( d_ptr->ref.load() > 1 ) {
+#else
+    if( int(d_ptr->ref) > 1 ) {
+#endif
         d_ptr->ref.deref();
         d_ptr = nullptr;
+#if QT_VERSION >= 0x050000
     } else if( d_ptr->ref.load() == 1 ) {
+#else
+    } else if( int(d_ptr->ref) == 1 ) {
+#endif
         delete d_ptr;
         d_ptr = nullptr;
     }

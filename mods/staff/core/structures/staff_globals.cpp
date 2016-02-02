@@ -430,7 +430,11 @@ QString staff::getDivisionDescrByName(const QString &name)
 QString staff_private::formatName(const QString &name)
 {
     QString result = name.trimmed();
+#if QT_VERSION >= 0x050000
     result.remove(QRegularExpression("^[\\s.,-]+|[\\s.,-]+$"));
+#else
+    result.remove(QRegExp("^[\\s.,-]+|[\\s.,-]+$"));
+#endif
     return(result);
 }
 
@@ -438,7 +442,11 @@ QString staff_private::formatName(const QString &name)
 QString staff_private::formatNameLeft(const QString &leftPart)
 {
     QString result = leftPart.trimmed();
+#if QT_VERSION >= 0x050000
     result.remove(QRegularExpression("^[\\s.,-0-9]+"));
+#else
+    result.remove(QRegExp("^[\\s.,-0-9]+"));
+#endif
     return(result);
 }
 
@@ -446,7 +454,11 @@ QString staff_private::formatNameLeft(const QString &leftPart)
 QString staff_private::formatNameRight(const QString &rightPart)
 {
     QString result = rightPart.trimmed();
+#if QT_VERSION >= 0x050000
     result.remove(QRegularExpression("[\\s.,-0-9]+$"));
+#else
+    result.remove(QRegExp("[\\s.,-0-9]+$"));
+#endif
     return(result);
 }
 

@@ -89,18 +89,16 @@ void ESURegistrationTableManager::addRecord(const RegistrationUserInfo &userInfo
         }
 
         Q_EMIT contentUpdated();
-    }    
+    }
 }
 
 
 void ESURegistrationTableManager::updateRecord(const QHostAddress &address, const RegistrationUserInfo &data)
 {
-    for( RegistrationUserInfo& u: m_tableData ) {
-        if( u.address == address ) {
-            u = data;
-
+    for(int i=0; i<m_tableData.size(); i++ ) {
+        if( m_tableData[i].address == address ) {
             if( m_dbReady ) {
-                QVariantMap record = __createDBRecord(u);
+                QVariantMap record = __createDBRecord(data);
                 QString condition("address=\'%1\'");
                 condition = condition.arg(address.toString());
                 if( m_dbTable->updateRecord( record, condition ) )
@@ -114,7 +112,9 @@ void ESURegistrationTableManager::updateRecord(const QHostAddress &address, cons
 
 void ESURegistrationTableManager::updateRecord(const QString &role, const RegistrationUserInfo &data)
 {
-    for( RegistrationUserInfo& u: m_tableData ) {
+
+    for( int i=0; i< m_tableData.size(); i++ ) {
+        RegistrationUserInfo u = m_tableData[i];
         if( u.role == role ) {
             u = data;
 
@@ -133,7 +133,7 @@ void ESURegistrationTableManager::updateRecord(const QString &role, const Regist
 
 bool ESURegistrationTableManager::containsRole(const QString &role)
 {
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.role == role ) return( true );
     }
 
@@ -142,7 +142,7 @@ bool ESURegistrationTableManager::containsRole(const QString &role)
 
 bool ESURegistrationTableManager::containsAddress(const QHostAddress &address)
 {
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.address == address ) return( true );
     }
 
@@ -154,7 +154,7 @@ bool ESURegistrationTableManager::containsAddress(const QString &address)
     QHostAddress a(address);
     if( a.isNull() ) return( false );
 
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.address == a ) return( true );
     }
 
@@ -163,7 +163,7 @@ bool ESURegistrationTableManager::containsAddress(const QString &address)
 
 bool ESURegistrationTableManager::containsName(const QString &name)
 {
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.name == name ) return( true );
     }
 
@@ -174,7 +174,7 @@ bool ESURegistrationTableManager::containsName(const QString &name)
 
 RegistrationUserInfo ESURegistrationTableManager::getRecordByRole(const QString &role) const
 {
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.role == role ) return( r );
     }
 
@@ -184,7 +184,7 @@ RegistrationUserInfo ESURegistrationTableManager::getRecordByRole(const QString 
 
 RegistrationUserInfo ESURegistrationTableManager::getRecordByAddress(const QHostAddress &address) const
 {
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.address == address ) return( r );
     }
 
@@ -196,7 +196,7 @@ RegistrationUserInfo ESURegistrationTableManager::getRecordByAddress(const QStri
 {
     QHostAddress addr(address);
 
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.address == addr ) return( r );
     }
 
@@ -206,7 +206,7 @@ RegistrationUserInfo ESURegistrationTableManager::getRecordByAddress(const QStri
 
 RegistrationUserInfo ESURegistrationTableManager::getRecordByName(const QString &name) const
 {
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.name == name ) return( r );
     }
 
@@ -217,7 +217,7 @@ RegistrationUserInfo ESURegistrationTableManager::getRecordByName(const QString 
 
 bool ESURegistrationTableManager::removeRecordByAddress(const QHostAddress &address)
 {
-    for( auto it = m_tableData.begin(); it != m_tableData.end(); ++it ) {
+    for( RegistrationTableData::iterator it = m_tableData.begin(); it != m_tableData.end(); ++it ) {
         if( it->address == address ) {
             QString condition("role=%1");
             condition = condition.arg(it->role);
@@ -242,7 +242,7 @@ bool ESURegistrationTableManager::removeRecordByAddress(const QString &address)
 
 bool ESURegistrationTableManager::removeRecordByRole(const QString &role)
 {
-    for( auto it = m_tableData.begin(); it != m_tableData.end(); ++it ) {
+    for( RegistrationTableData::iterator it = m_tableData.begin(); it != m_tableData.end(); ++it ) {
         if( it->role == role ) {
             QString condition("role=%1");
             condition = condition.arg(it->role);
@@ -265,7 +265,7 @@ void ESURegistrationTableManager::syncData()
     if( m_tableData.isEmpty() ) return;
 
     RegistrationTableData::iterator it;
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( it->time >= m_lastSyncTime ) {
             RegistrationPackageNET p(ESURegistrationEngine::SyncRegistrationTableMsg);
             RegistrationPackageDataNET record;
@@ -288,7 +288,7 @@ void ESURegistrationTableManager::syncRecord(const QHostAddress &address)
     RegistrationPackageNET p(ESURegistrationEngine::SyncRegistrationTableMsg);
     p.records.enable = true;
 
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( r.address == address ) {
             RegistrationPackageDataNET record(r);
             p.addRecord(record);
@@ -305,7 +305,7 @@ void ESURegistrationTableManager::syncAllData()
 {
     if( m_tableData.isEmpty() ) return;
 
-    for( const RegistrationUserInfo& r: m_tableData )
+    foreach( const RegistrationUserInfo& r, m_tableData )
     {
         RegistrationPackageNET p(ESURegistrationEngine::SyncRegistrationTableMsg);
         RegistrationPackageDataNET record(r);
@@ -326,7 +326,7 @@ void ESURegistrationTableManager::updateData(const RegistrationTableData &update
     int index = 0;
 
 
-    for( const RegistrationUserInfo& r: updateData )
+    foreach( const RegistrationUserInfo& r, updateData )
     {
         QVariantMap record = __createDBRecord(r);
 
@@ -364,7 +364,7 @@ void ESURegistrationTableManager::updateData(const RegistrationPackageNET &p)
     bool contains = false;
 
 
-    for( const RegistrationPackageDataNET& r: p.records.recordsList )
+    foreach( const RegistrationPackageDataNET& r, p.records.recordsList )
     {
         RegistrationUserInfo rec = r;
 
@@ -372,7 +372,7 @@ void ESURegistrationTableManager::updateData(const RegistrationPackageNET &p)
             if( m_tableData[index].address == r.netAddress &&
                     m_tableData[index].time < r.time) {
                 contains = true;
-                m_tableData[index] = rec;                
+                m_tableData[index] = rec;
             }
         }
         if( contains ) continue;
@@ -458,14 +458,14 @@ bool ESURegistrationTableManager::loadFromXML(const QByteArray &dataXML)
 
 bool ESURegistrationTableManager::loadFromLocalDB()
 {
-    auto tableDb = esuDb.getVariantTable("RegistrationTable", m_tableSceme);
+    VariantTable* tableDb = esuDb.getVariantTable("RegistrationTable", m_tableSceme);
     if( tableDb == nullptr ) return(false);
 
-    auto records = tableDb->select("");
+    QList<QVariantMap> records = tableDb->select("");
     if( records.isEmpty() ) return(false);
 
     m_tableData.clear();
-    for( const QVariantMap& record: records ) {
+    foreach( const QVariantMap& record, records ) {
         RegistrationUserInfo data;
         __fillDataFromDBRecord(data, record);
         m_tableData.append(data);
@@ -500,10 +500,10 @@ bool ESURegistrationTableManager::saveToFile(const QString &filePath)
 
 bool ESURegistrationTableManager::saveToLocalDB()
 {
-    auto tableDb = esuDb.getVariantTable("RegistrationTable", m_tableSceme);
+    VariantTable* tableDb = esuDb.getVariantTable("RegistrationTable", m_tableSceme);
     if( tableDb == nullptr ) return(false);
 
-    for( const RegistrationUserInfo& r: m_tableData ) {
+    foreach( const RegistrationUserInfo& r, m_tableData ) {
         QVariantMap record = __createDBRecord(r);
         QString cond = QString("role=%1").arg(r.role);
         if( !tableDb->containsRecord(cond) )
@@ -546,7 +546,7 @@ QByteArray ESURegistrationTableManager::convertToXML(FormatType format)
         domDoc.insertBefore(rootElement, xmlNode);
         rootElement.setAttribute("created", currentDateTime.toString());
 
-        for( RegistrationUserInfo& r: m_tableData )
+        foreach( const RegistrationUserInfo& r, m_tableData )
         {
             QDomElement recordElement = domDoc.createElement("record");
             rootElement.appendChild(recordElement);
@@ -584,7 +584,7 @@ QByteArray ESURegistrationTableManager::convertToJSON(FormatType format)
         QJsonObject jsonRootObj;
         QJsonArray jsonRecordArray;
 
-       for( RegistrationUserInfo& r: m_tableData ) {
+        for( RegistrationUserInfo& r: m_tableData ) {
             QJsonObject jsonRecord;
             jsonRecord["role"] = r.role;
             jsonRecord["address"] = r.address.toString();
@@ -642,7 +642,7 @@ RegistrationTableData ESURegistrationTableManager::convertFromXML(const QByteArr
             if( !name.isEmpty() && !addr.isEmpty() )
                 table.append(RegistrationUserInfo(role, addr, name));
 
-            recordNode = recordNode.nextSibling();            
+            recordNode = recordNode.nextSibling();
         }
 
         return( table );

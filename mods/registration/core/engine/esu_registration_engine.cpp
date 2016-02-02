@@ -32,10 +32,10 @@ void ESURegistrationEngine::setBase(ESURegistration *base)
     d->base = base;
 }
 
-void ESURegistrationEngine::setUI(ESURegistrationUI *ui)
-{
-    d->ui = ui;
-}
+//void ESURegistrationEngine::setUI(ESURegistrationUI *ui)
+//{
+//    d->ui = ui;
+//}
 
 // [ PROPERTIES ]: {{{
 
@@ -82,8 +82,9 @@ void ESURegistrationEngine::loadConfiguration()
     d->profileAddress = esuNet.localAddress();
     if( d->profileAddress.isNull() ) return;
 #else
-    d->profileAddress = "::1";
+    d->profileAddress = "::1"; //это мой адрес?
 #endif
+    //todo убрать esuNet
 
     // Проверяем, зарегестрированы ли мы. Для этого смотрим запись в БД. Если есть - знначит - да.
     if( d->tableManager.containsAddress( d->profileAddress ) )
@@ -127,7 +128,7 @@ void ESURegistrationEngine::loadConfiguration()
         d->base->setCurrentRegistrarIndex( d->registrarList.indexOf(d->registrarMain) );
 
     } else {
-        for( const RegistrarInfoSpec& r: d->registrarList )
+        foreach( const RegistrarInfoSpec& r, d->registrarList )
         {
             if( r.address == d->profileAddress ) {
                 d->isRegistrar = true;
@@ -171,7 +172,7 @@ void ESURegistrationEngine::saveConfiguration()
         ESUSettings::set(ESUSettings::ProfileStreetAddress) = d->_u.registrationData.streetAddress;
 #endif
     // Сохраняем в базу данных
-    auto tableDb = esuDb.getVariantTable("RegistrationTable", d->m_tableSceme);
+    VariantTable* tableDb = esuDb.getVariantTable("RegistrationTable", d->m_tableSceme);
     if( tableDb == nullptr || d->_u.registrationData.isEmpty() )
         return;
 
@@ -214,15 +215,17 @@ void ESURegistrationEngine::clearConfiguration()
 
 bool ESURegistrationEngine::loadRegistrarList()
 {
-    QFileInfo info("~/.config/MKB-Kompas/registration_config.xml");
+    QFileInfo info("/home/programmer/.config/mkbcompas/registration_config.xml"); //todo передать в качестве аргумента
     QFile fileData(info.absoluteFilePath());
     QString addr;
     QDomDocument domDoc("RegistrarList");
     QDomElement rootElement;
 
+    qDebug() <<"fileData.exists() "<< fileData.exists();
+
     do {
         if( !fileData.exists() ) {
-            fileData.setFileName(":/mods/registration/conf/registration_config.xml");
+            fileData.setFileName(":/mods/registration/conf/registration_config.xml"); //todo возможно это и не надо
             if( !fileData.exists() ) break;
         }
 
@@ -374,7 +377,7 @@ bool ESURegistrationEngine::checkRegistrator()
 
         if( d->registrarCheckStack.isEmpty() ) {
             // Инициализируем стек проверки регистраторов
-            for( const RegistrarInfoSpec& r: d->registrarList ) {
+            foreach( const RegistrarInfoSpec& r, d->registrarList ) {
                 if( r.address == d->registrarMain.address ) continue;
                 d->registrarCheckStack.push(r);
             }
@@ -593,7 +596,7 @@ void ESURegistrationEngine::onTaskTimeout()
 
             d->base->setCurrentMessage("Нет связи с регистраторами");
             d->base->clearCurrentOperation();
-            d->ui->stopTaskTimer();
+//            d->ui->stopTaskTimer();
             break;
 
         } else {
@@ -643,7 +646,7 @@ void ESURegistrationEngine::onTaskTimeout()
             d->base->setCurrentMessage(msg);
 
             sendRegistrationMsg((const RegistrationPackageNET&)p, address);
-            d->ui->startTaskTimer(20000); // 20 секунд
+//            d->ui->startTaskTimer(20000); // 20 секунд
         }
 
         break;
@@ -690,7 +693,7 @@ void ESURegistrationEngine::processUserRegistration()
             }
             sendRegistrationMsg((const RegistrationPackageNET&)p, address);
 
-            d->ui->startTaskTimer(20000); // 20 секунд
+//            d->ui->startTaskTimer(20000); // 20 секунд
             return;
 
         } else {
@@ -732,7 +735,7 @@ void ESURegistrationEngine::processUserRegistration()
 
             d->base->setCurrentMessage("Ожидание ответа регистраторов");      
             sendUserMsg(p);
-            d->ui->startTaskTimer(d->timeout.registrationReply);
+//            d->ui->startTaskTimer(d->timeout.registrationReply);
             //d->waitTimer.start(d->timeout.registrationReply);
 
             break;
@@ -767,7 +770,7 @@ void ESURegistrationEngine::processUserRegistration()
             d->base->setCurrentMessage("Ожидание ответа регистраторов");
 
             sendUserMsg(p);
-            d->ui->startTaskTimer(d->timeout.registrationReply);
+//            d->ui->startTaskTimer(d->timeout.registrationReply);
             break;
         }
         default:
@@ -857,7 +860,7 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
 
         } else break;
 
-        d->ui->stopTaskTimer();
+//        d->ui->stopTaskTimer();
 
         break;
     }
@@ -896,7 +899,7 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
         d->_r.registrationQueries.insert( p.address, user );
 
         // Помещаем в очередь на регистрацию (обработку данных регистратором)
-        d->ui->modelQueries.appendData(user);
+//        d->ui->modelQueries.appendData(user);
 
         break;
     }
@@ -904,7 +907,7 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
     {
         // [КЛИЕНТ]: Получили уведомление о состоянии регистрации
         //d->waitTimer.stop();
-        d->ui->stopTaskTimer();
+//        d->ui->stopTaskTimer();
         d->base->clearTasks();
         d->base->setCurrentTask(ESURegistration::NoTasks);
 
@@ -1108,7 +1111,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
                     user.updateFlags = registration::AddressFlag;
                     user.message = "Обновление адреса регистрации";
                     d->_r.registrationQueries.insert( p.address, user );
-                    d->ui->modelQueries.appendData(user); // UI
+//                    d->ui->modelQueries.appendData(user); // UI
                 }
             }
 
@@ -1168,7 +1171,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
             }
 
             d->_r.registrationQueries.insert( p.address, currentUser );
-            d->ui->modelQueries.appendData(currentUser); // UI
+//            d->ui->modelQueries.appendData(currentUser); // UI
             break;
 
         } else {
@@ -1181,7 +1184,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
     case UserChangeProfileReplyMsg:
     {
         // Ответ регистратора на запрос смены роли.
-        d->ui->stopTaskTimer();
+//        d->ui->stopTaskTimer();
         d->base->clearTasks();
         d->base->setCurrentTask(ESURegistration::NoTasks);
 

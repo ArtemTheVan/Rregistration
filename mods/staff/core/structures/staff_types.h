@@ -1,6 +1,7 @@
 #ifndef STAFF_TYPES_H
 #define STAFF_TYPES_H
 
+#include <../registration/core/global1.h>
 #include <QtGlobal>
 #include <QtCore/qstring.h>
 #include <QtCore/qlist.h>
@@ -113,18 +114,34 @@ public:
 
     StaffUnitEquipment& operator +=(const StaffUnitEquipment& rhs);
 //    const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >& operator[](EquipmentType type) const;
+#ifdef QT4_ETU
+    const QHash<QString, StaffUnitEquipmentEntity* >& getConst(EquipmentType type) const;
+    QHash<QString, StaffUnitEquipmentEntity* >& get(EquipmentType type);
+#else
     const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >& getConst(EquipmentType type) const;
     QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >& get(EquipmentType type);
+#endif
 
 
 private:
+#ifdef QT4_ETU
+    void add(QHash<QString, StaffUnitEquipmentEntity* > &res,
+             const QHash<QString, StaffUnitEquipmentEntity* > &summand);
+#else
     void add(QHash<QString, shared_ptr<StaffUnitEquipmentEntity> > &res,
              const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> > &summand);
+#endif
 
 public:
+#ifdef QT4_ETU
+    QHash<QString, StaffUnitEquipmentEntity* >  ammunition; // боеприпасы
+    QHash<QString, StaffUnitEquipmentEntity* >  logistic_means; // материально-технические средства
+    QHash<QString, StaffUnitEquipmentEntity* >  weapons; // вооружение
+#else
     QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >  ammunition; // боеприпасы
     QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >  logistic_means; // материально-технические средства
     QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >  weapons; // вооружение
+#endif
 };
 
 bool isExtendedEntity(StaffUnitEquipment::EquipmentType type);

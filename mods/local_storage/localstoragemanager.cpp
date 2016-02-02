@@ -31,7 +31,8 @@ bool LocalStorageManager::initializeVariantTable(QString name, QVariantMap bluep
     bool mustCreateTable = false;
 
     //Сначала проверяю, существует ли такая таблица и какой у неё blueprint;
-    auto tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
+    DictionaryTable* tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
+
     QVariant tableType = tableDict->read(name,true);
 
     if (tableType.isValid() == false) {
@@ -55,7 +56,11 @@ bool LocalStorageManager::initializeVariantTable(QString name, QVariantMap bluep
     else {
         //Таблица существует и валидна - ничего не делаю
     }
+#ifdef QT4_ETU
+    VariantTable* t (new VariantTable(name,db,blueprint));
+#else
     std::shared_ptr<VariantTable> t (new VariantTable(name,db,blueprint));
+#endif
     variants.insert(name, t);
     if (mustCreateTable) {
         t->createTable();
@@ -87,7 +92,11 @@ bool LocalStorageManager::tableExists(QString tablename)
 bool LocalStorageManager::clearTable(const QString &tablename)
 {
     if( variants.contains(tablename) ) {
+#ifdef QT4_ETU
+        VariantTable* t = variants[tablename];
+#else
         std::shared_ptr<VariantTable> t = variants[tablename];
+#endif
         t->clearTable();
         return( true );
     }
@@ -98,10 +107,15 @@ bool LocalStorageManager::clearTable(const QString &tablename)
 bool LocalStorageManager::removeTable(const QString &tablename)
 {
     if( variants.contains(tablename) ) {
+#ifdef QT4_ETU
+        VariantTable* t = variants[tablename];
+        DictionaryTable* tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
+#else
         std::shared_ptr<VariantTable> t = variants[tablename];
+        auto tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
+#endif
         t->dropTable();
         variants.remove(tablename);
-        auto tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
         tableDict->removeRecord(tablename);
 
         return( true );
@@ -113,11 +127,29 @@ bool LocalStorageManager::removeTable(const QString &tablename)
 
 QVariantMap LocalStorageManager::getBlueprintByName(QString name)
 {
+#ifdef QT4_ETU
+    DictionaryTable* tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
+#else
     auto tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
+#endif
     return tableDict->read(name).toMap();
 
 }
 
+#ifdef QT4_ETU
+DictionaryTable* LocalStorageManager::getDictionary(QString name)
+{
+    /* if (variants.contains(name))
+        throw std::logic_error("Requested a Localstorage dictionary by the name of VariantMap");*/
+    if (!dictionaries.contains(name)) {
+        DictionaryTable* t = (new DictionaryTable(name,db));
+        dictionaries.insert(name, t);
+        DictionaryTable* tableDict = getDictionary(LOCALSTORAGE_SYSTEM_TABLE_NAME);
+        tableDict->insert(name,"dict");
+    }
+    return dictionaries[name];
+}
+#else
 std::shared_ptr<DictionaryTable> LocalStorageManager::getDictionary(QString name)
 {
    /* if (variants.contains(name))
@@ -130,8 +162,13 @@ std::shared_ptr<DictionaryTable> LocalStorageManager::getDictionary(QString name
     }
     return dictionaries[name];
 }
+#endif
 
+#ifdef QT4_ETU
+VariantTable* LocalStorageManager::getVariantTable(
+#else
 std::shared_ptr<VariantTable> LocalStorageManager::getVariantTable(
+#endif
         QString name, QVariantMap blueprint)
 {
     if (!variants.contains(name)) {
@@ -140,9 +177,13 @@ std::shared_ptr<VariantTable> LocalStorageManager::getVariantTable(
     return variants[name];
 }
 
+#ifdef QT4_ETU
+VariantTable* LocalStorageManager::getVariantTable(QString name)
+#else
 std::shared_ptr<VariantTable> LocalStorageManager::getVariantTable(QString name)
+#endif
 {
-    if (!variants.contains(name)) {
+    if(!variants.contains(name)) {
         qCritical("Requested a new VariantTable without providing blueprint");
     }
     return variants[name];
@@ -155,7 +196,8 @@ void LocalStorageManager::clearAllData()
     if( variants.isEmpty() ) return;
 
     QStringList keys = variants.keys();
-    for( const QString& key: keys ) {
+
+    foreach (const QString &key, keys) {
         removeTable(key);
     }
 }

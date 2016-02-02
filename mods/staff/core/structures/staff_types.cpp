@@ -3,14 +3,18 @@
 
 using namespace std;
 
+#ifdef QT4_ETU
+QString entityToString(const QHash<QString, StaffUnitEquipmentEntity* >& entity);
+#else
 QString entityToString(const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >& entity);
+#endif
 
 StaffUnitStreetAddress::StaffUnitStreetAddress(QVariant data)
 {
     full = data.toString();
 
     // Разбор строки
-/*          0        1       2       3
+    /*          0        1       2       3
 0      ул. Лесная, д. 5, кв. 176, т.34567890
 1      Москва
 2      Россия
@@ -49,7 +53,11 @@ void StaffUnitEquipment::ammunitionFromVariant(const QVariant v)
         QPoint p = m[type].toPoint();
         int state_cnt = p.x();
         int num_of_rounds = p.y();
+#ifdef QT4_ETU
+        ammunition[type] = (StaffUnitEquipmentEntity *)(new StaffUnitEquipmentEntityExt(state_cnt, num_of_rounds));
+#else
         ammunition[type] = shared_ptr<StaffUnitEquipmentEntity>(new StaffUnitEquipmentEntityExt(state_cnt, num_of_rounds));
+#endif
     }
 }
 
@@ -62,7 +70,11 @@ void StaffUnitEquipment::logisticMeansFromVariant(const QVariant v)
         QPoint p = m[type].toPoint();
         int state_cnt = p.x();
         int num_of_rounds = p.y();
+#ifdef QT4_ETU
+        logistic_means[type] = (StaffUnitEquipmentEntity *)(new StaffUnitEquipmentEntityExt(state_cnt, num_of_rounds));
+#else
         logistic_means[type] = shared_ptr<StaffUnitEquipmentEntity>(new StaffUnitEquipmentEntityExt(state_cnt, num_of_rounds));
+#endif
     }
 
 }
@@ -71,16 +83,24 @@ void StaffUnitEquipment::weaponsFromVariant(const QVariant v)
 {
     weapons.clear();
     QVariantMap mw = v.toMap();
-    for(QString type: mw.keys()){
+    foreach (QString type, mw.keys()) {
         int state_cnt = mw[type].toInt();
+#ifdef QT4_ETU
+        weapons[type] = (StaffUnitEquipmentEntity *)(new StaffUnitEquipmentEntity(state_cnt));
+#else
         weapons[type] = shared_ptr<StaffUnitEquipmentEntity>(new StaffUnitEquipmentEntity(state_cnt));
+#endif
     }
 }
 
+#ifdef QT4_ETU
+QString entityToString(const QHash<QString, StaffUnitEquipmentEntity* >& entity)
+#else
 QString entityToString(const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >& entity)
+#endif
 {
     QString s;
-    for(auto it = entity.begin(); it != entity.end(); ++it){
+    for(QHash<QString, StaffUnitEquipmentEntity*>::const_iterator it = entity.begin(); it != entity.end(); ++it) {
         s += QString("{%1: %2}, ").arg(it.key()).arg((*it)->toString());
     }
     return(s);
@@ -96,14 +116,23 @@ QString StaffUnitEquipment::toString() const
     return(s);
 }
 
+#ifdef QT4_ETU
+void StaffUnitEquipment::add(QHash<QString, StaffUnitEquipmentEntity* >& res,
+                             const QHash<QString, StaffUnitEquipmentEntity* >& summand)
+#else
 void StaffUnitEquipment::add(QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >& res,
                              const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> >& summand)
+#endif
 {
-    for(auto it = summand.cbegin(); it != summand.cend(); ++it){
-        if(res.contains(it.key())){         // если такой тип снаряжения существует, то
+    for(QHash<QString, StaffUnitEquipmentEntity* >::const_iterator it = summand.begin(); it != summand.end(); ++it) {
+        if(res.contains(it.key())) {         // если такой тип снаряжения существует, то
             *(res[it.key()]) += *(it.value());    // добавляем его в имеющийся
-        }else
+        } else
+#ifdef QT4_ETU
+            res.insert(it.key(), (StaffUnitEquipmentEntity *)(new StaffUnitEquipmentEntity(*(it.value()) ) ) ); // иначе добавляем новый элемент
+#else
             res.insert(it.key(), shared_ptr<StaffUnitEquipmentEntity>(new StaffUnitEquipmentEntity(*(it.value()) ) ) ); // иначе добавляем новый элемент
+#endif
     }
 }
 
@@ -116,9 +145,15 @@ StaffUnitEquipment &StaffUnitEquipment::operator +=(const StaffUnitEquipment &rh
     return(*this);
 }
 
+#ifdef QT4_ETU
+const QHash<QString, StaffUnitEquipmentEntity* > &StaffUnitEquipment::getConst(StaffUnitEquipment::EquipmentType type) const
+{
+    static QHash<QString, StaffUnitEquipmentEntity* > fake_hash;
+#else
 const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> > &StaffUnitEquipment::getConst(StaffUnitEquipment::EquipmentType type) const
 {
     static QHash<QString, shared_ptr<StaffUnitEquipmentEntity> > fake_hash;
+#endif
     switch (type) {
     case Ammunition:    return ammunition;
     case Weapon:        return weapons;
@@ -127,9 +162,15 @@ const QHash<QString, shared_ptr<StaffUnitEquipmentEntity> > &StaffUnitEquipment:
     }
 }
 
+#ifdef QT4_ETU
+QHash<QString, StaffUnitEquipmentEntity* > &StaffUnitEquipment::get(StaffUnitEquipment::EquipmentType type)
+{
+    static QHash<QString, StaffUnitEquipmentEntity* > fake_hash;
+#else
 QHash<QString, shared_ptr<StaffUnitEquipmentEntity> > &StaffUnitEquipment::get(StaffUnitEquipment::EquipmentType type)
 {
     static QHash<QString, shared_ptr<StaffUnitEquipmentEntity> > fake_hash;
+#endif
     switch (type) {
     case Ammunition:    return ammunition;
     case Weapon:        return weapons;
@@ -151,7 +192,7 @@ int &StaffUnitEquipmentEntity::get(int column)
     switch (column) {
     /*models::StateCount*/
     case 1: return(state_count);
-    /*models::CurCount*/
+        /*models::CurCount*/
     case 2: return(current_count);
     default: return(i);
     }
@@ -163,7 +204,7 @@ int StaffUnitEquipmentEntity::getConst(int column) const
     switch (column) {
     /*models::StateCount*/
     case 1: return(state_count);
-    /*models::CurCount*/
+        /*models::CurCount*/
     case 2: return(current_count);
     default: return(i);
     }

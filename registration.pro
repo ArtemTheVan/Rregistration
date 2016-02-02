@@ -11,7 +11,7 @@ QTPLUGIN += qsvg
 DEFINES += RECTOR_PROJECT
 
 TEMPLATE    = app
-CONFIG     += qt warn_on c++11
+CONFIG     += qt warn_on debug
 
 # Заглушка
 UI_PATH_PREFIX   = quick2

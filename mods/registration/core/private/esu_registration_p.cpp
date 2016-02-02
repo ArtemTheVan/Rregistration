@@ -10,10 +10,10 @@ ESURegistrationPrivate::ESURegistrationPrivate(ESURegistration *parent):
   , currentMessage("Нет задач"), errorMessage("Нет ошибок")
   , currentAddress(""), currentRegistrarAddress("")
   , currentRegistrarIndex(0), registrarCount(0), registrarCheckCount(0)
-  , currentUiForm(nullptr), ui(new ESURegistrationUI(parent, parent))
+  , currentUiForm(nullptr)/*, ui(new ESURegistrationUI(parent, parent))*/
 {
     engine.setBase(parent);
-    engine.setUI(ui);
+//    engine.setUI(ui);
 
     dataInfo.role = "ПРОФИЛЬ НЕ ЗАДАН";
     dataInfo.name = "";

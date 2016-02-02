@@ -590,10 +590,10 @@ ESURegistrationEngine *ESURegistration::engine() const
     return(&(d->engine));
 }
 
-ESURegistrationUI *ESURegistration::ui() const
-{
-    return( d->ui );
-}
+//ESURegistrationUI *ESURegistration::ui() const
+//{
+//    return( d->ui );
+//}
 
 // }}} [PROPERTIES]
 // [ BASE INTERFACE/QML ]: {{{

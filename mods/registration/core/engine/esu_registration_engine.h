@@ -38,7 +38,7 @@ public:
     ~ESURegistrationEngine();
 
     void setBase(ESURegistration* base);
-    void setUI(ESURegistrationUI* ui);
+//    void setUI(ESURegistrationUI* ui);
 
 public:
     // [ PROPERTIES ]:

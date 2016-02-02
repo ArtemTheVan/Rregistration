@@ -3,7 +3,6 @@
 
 #include <QtCore>
 
-#include "esu_registration_ui.h"
 #include "esu_registration_data.h"
 #include "esu_registration_global.h"
 
@@ -246,7 +245,7 @@ public:
 
 public:
     ESURegistrationEngine   *engine() const;
-    ESURegistrationUI       *ui() const;
+//    ESURegistrationUI       *ui() const;
 
 public Q_SLOTS:
     // [ USER INTERFACE ]:

@@ -97,7 +97,11 @@ protected:
 
     // Local DB
     QVariantMap m_tableSceme;
+#ifdef QT4_ETU
+    VariantTable* m_dbTable;
+#else
     std::shared_ptr<VariantTable> m_dbTable;
+#endif
     bool m_dbReady;
     QTimer m_updateTimer;
 };

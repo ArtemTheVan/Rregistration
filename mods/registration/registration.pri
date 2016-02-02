@@ -14,13 +14,13 @@ DEFINES         += ESU_REGISTRATION_LOG
 DEFINES         += ESU_UI_REGISTRATION
 DEFINES         += ESU_UI_REGISTRATION_LOG
 
-QT              *= network quick
+QT              *= network
 
 INCLUDEPATH     += ./mods/registration/core
 INCLUDEPATH     += ./mods/registration/core/engine
 
-INCLUDEPATH     += ./mods/registration/ui/$$UI_PATH_PREFIX/
-INCLUDEPATH     += ./mods/registration/ui/$$UI_PATH_PREFIX/model
+#INCLUDEPATH     += ./mods/registration/ui/$$UI_PATH_PREFIX/
+#INCLUDEPATH     += ./mods/registration/ui/$$UI_PATH_PREFIX/model
 
 
 # [ CORE ]:
@@ -50,26 +50,26 @@ SOURCES += \
 
 # [ UI ]:
 
-HEADERS += \
-            mods/registration/ui/$$UI_PATH_PREFIX/esu_registration_ui.h \            
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_models.h \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_path_model.h \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_staff_model.h \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_staff_model_p.h \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_queries_model.h \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_ranks_model.h \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_table_model.h
+#HEADERS += \
+#            mods/registration/ui/$$UI_PATH_PREFIX/esu_registration_ui.h \            
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_models.h \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_path_model.h \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_staff_model.h \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_staff_model_p.h \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_queries_model.h \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_ranks_model.h \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_table_model.h
 
 
-SOURCES += \
-            mods/registration/ui/$$UI_PATH_PREFIX/esu_registration_ui.cpp \            
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_path_model.cpp \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_staff_model.cpp \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_queries_model.cpp \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_ranks_model.cpp \
-            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_table_model.cpp
+#SOURCES += \
+#            mods/registration/ui/$$UI_PATH_PREFIX/esu_registration_ui.cpp \            
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_path_model.cpp \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_staff_model.cpp \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_queries_model.cpp \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_ranks_model.cpp \
+#            mods/registration/ui/$$UI_PATH_PREFIX/model/esu_registration_table_model.cpp
+#
 
-
-RESOURCES += \
-            mods/registration/core/registration.qrc \
-            mods/registration/ui/$$UI_PATH_PREFIX/ui_registration.qrc
+#RESOURCES += \
+#            mods/registration/core/registration.qrc \
+#            mods/registration/ui/$$UI_PATH_PREFIX/ui_registration.qrc

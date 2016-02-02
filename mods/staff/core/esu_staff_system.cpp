@@ -1,7 +1,9 @@
 #include "esu_staff_system.h"
 #include "esu_staff_system_p.h"
 
+#ifdef ESU_UI_QUICK
 #include <QtQml>
+#endif
 
 
 // [ INIT/DESTROY ]: {{{
@@ -26,8 +28,10 @@ void ESUStaffSystem::declareQmlTypes()
     static bool declared = false;
     if( declared ) return;
 
+#ifdef ESU_UI_QUICK
     qmlRegisterUncreatableType<ESUStaffSystem>(
                 "MKBKompas.CSR.ESUTZ.Staff", 1, 0, "EsuStaff", "Can\'t create ESUStaff instance!");
+#endif
 
     declared = true;
 }

@@ -117,7 +117,7 @@ void StaffBaseUnitPrivate::setName(const QString &unitName)
 
     if( partsCount > 1 ) {
         // [ Полное имя: К.1-МСО.2-МСВ.МСР ]
-        nameFullPart = nameParts.join('.');
+        nameFullPart = nameParts.join(".");
     }
 }
 
@@ -276,7 +276,7 @@ void StaffBaseUnitPrivate::setNetworkAddress(const QHostAddress &address)
     {
         if( containsNode ) {
             // Изменение NET адреса
-            for( auto it = engine->nodesNetAddress.begin(); it != engine->nodesNetAddress.end(); ++it )
+            for( QHash<QHostAddress, StaffObjectPrivate*>::iterator it = engine->nodesNetAddress.begin(); it != engine->nodesNetAddress.end(); ++it )
             {
                 if( this == it.value() ) {
                     it = engine->nodesNetAddress.erase(it);
@@ -290,7 +290,7 @@ void StaffBaseUnitPrivate::setNetworkAddress(const QHostAddress &address)
         }
     } else if( m_netAddress.isNull() && containsNode ) {
         // Удаление существующего узла
-        for( auto it = engine->nodesNetAddress.begin(); it != engine->nodesNetAddress.end(); ++it )
+        for( QHash<QHostAddress, StaffObjectPrivate*>::iterator it = engine->nodesNetAddress.begin(); it != engine->nodesNetAddress.end(); ++it )
         {
             if( this == it.value() ) {
                 it = engine->nodesNetAddress.erase(it);

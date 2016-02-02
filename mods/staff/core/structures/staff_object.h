@@ -24,11 +24,11 @@ class StaffObject
 public:
     enum StaffType
     {
-        ObjectType,
-        BaseUnitType,
-        SoldierType,
-        CommanderType,
-        DivisionType
+        ObjectType=0,
+        BaseUnitType=1,
+        SoldierType=2,
+        CommanderType=3,
+        DivisionType=4
     };
 
 public:

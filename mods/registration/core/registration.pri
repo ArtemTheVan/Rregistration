@@ -18,7 +18,7 @@ DEFINES         += ESU_UI_REGISTRATION_LOG
 INCLUDEPATH     += ./mods/registration/core
 INCLUDEPATH     += ./mods/registration/core/engine
 
-INCLUDEPATH     += ./mods/registration/ui/quick1/model
+#INCLUDEPATH     += ./mods/registration/ui/quick1/model
 
 
 HEADERS += \
