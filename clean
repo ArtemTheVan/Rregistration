@@ -1,0 +1,53 @@
+#!/bin/bash
+# Команда очистки.
+# Аргумент команды clean должен содержаться в файле targets, который формируется вручную.
+# С параметром all скрипт очистит все поддиректории build, указанные в файле targets.
+
+if [ $# -ne 1 ]
+then
+	echo "Wrong number of argument"
+	set $1 -e x86
+#	exit 1
+fi
+
+# Для параметра all собрать все цели.
+if [ $1 = all ]
+then
+	for tar in `cat targets`
+	do $0 ${tar}
+	done
+# Прочие параметры команды должны додержаться в файле target.  
+elif grep $1 targets > /dev/null
+then
+#	clean
+	cd libregistration; ./clean $1; cd ..
+	cd libstaff; ./clean $1; cd ..
+	cd libstorage; ./clean $1; cd ..
+
+	echo "Clean bld/$1."
+	cd bld/$1
+#	rm -R CMakeFiles
+#	rm *.cxx cmake_install.cmake CMakeCache.txt Makefile
+
+	for file in *.cxx cmake_install.cmake CMakeCache.txt Makefile *.h
+	do
+		if [ -e ${file} ]
+		then
+			echo "Delete ${file}."
+			rm ${file}
+		fi
+	done
+
+	for file in CMakeFiles
+	do
+		if [ -e ${file} ]
+		then
+			echo "Delete ${file}."
+			rm -R ${file}
+		fi
+	done
+
+	cd ../..
+else
+	echo "Wrong argument."
+fi

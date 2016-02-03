@@ -1,0 +1,80 @@
+#!/bin/bash
+# Скрипт сборки проекта.
+# Скрипту необходимо передать аргумент, задающий цель сборки.
+# Возможные значения перечислены в файле targets. (Файл targets компонуется вручную, каждой строке соответствует одноимённая папка с cmake-скриптом в директории bld.) 
+# С параметром all скрипт соберёт все цели.
+
+#if [ $# -ne 1 ]
+#then
+#	echo "Wrong number of argument"
+#	exit 1
+#fi
+
+if [ $# -ne 1 ]
+then
+	echo "Wrong number of argument"
+#	set $1 -e x86
+	for tar in `cat targets`
+	do set $1 -e ${tar}
+	break
+	done
+fi
+
+echo "build for target $1"
+#export DEFENVS="-DNPI"
+#export DEFENVS="-DKPP"
+export DEFENVS="-DZKPK"
+export _MAINDIR_=`pwd`
+#export DEFNODEBUG="-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT -DNDEBUG"
+export DEFNODEBUG="-g"
+export _MAINNAME_="registration"
+
+# Для параметра all собрать все цели.
+if [ $1 = all ]
+then
+	for tar in `cat targets`
+	do $0 ${tar}
+	done
+# Прочие параметры команды должны содержаться в файле target.  
+elif grep $1 targets > /dev/null
+then
+export _DEFARCH_="${1}"
+
+#	На случай если скрипт завершится аварийно, удаляем прежние бинарники и информацию о версии сборки.
+	for file in bin/$1/*
+	do	
+		if [ -e ${file} ]
+		then
+			echo "Delete ${file}"
+			rm ${file}
+		fi
+	done
+
+	if [ "$1" == "x86" ]
+	then
+		echo "building for $1"
+		export DEFENVS="-DHOST ${DEFENVS}"
+		export _QTDIR_="/usr/share/qt4"
+		export _QTMOC_="/usr/bin/moc-qt4"
+		#-fsanitize=undefined,address
+		export CXXFLAGSENVS="-pipe -O3 -s -Wall ${DEFNODEBUG} -Wformat -Wformat-security -Winit-self -Wempty-body -Winit-self -Wignored-qualifiers -Wformat-security"
+	fi
+	if [ "$1" == "arm" ]
+	then
+		echo "building for $1"
+	fi
+
+	# build libs and plugins
+	cd libstorage; ./build_ $1; cd ..
+	cd libstaff; ./build_ $1; cd ..
+	cd libregistration; ./build_ $1; cd ..
+
+#	Заходим в папку цели сборки, собираем, возвращаемся в исходный каталог. 
+	cd bld/$1
+	cmake . || exit 1
+	make -j5 || exit 1 
+	cd ../..
+
+else
+	echo "Wrong argument."
+fi

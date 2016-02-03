@@ -1,0 +1,80 @@
+#!/bin/bash
+# Скрипт сборки проекта.
+# Скрипту необходимо передать аргумент, задающий цель сборки.
+# Возможные значения перечислены в файле targets. (Файл targets компонуется вручную, каждой строке соответствует одноимённая папка с cmake-скриптом в директории bld.) 
+# С параметром all скрипт соберёт все цели.
+
+#if [ $# -ne 1 ]
+#then
+#	echo "Wrong number of argument"
+#	exit 1
+#fi
+
+if [ $# -ne 1 ]
+then
+	echo "Wrong number of argument"
+#	set $1 -e x86
+	for tar in `cat ./../targets`
+	do set $1 -e ${tar}
+	break
+	done
+fi
+echo "build for target $1"
+
+export _NAME_="storage"
+
+# Для параметра all собрать все цели.
+if [ $1 = all ]
+then
+	for tar in `cat ./../targets`
+	do $0 ${tar}
+	done
+# Прочие параметры команды должны содержаться в файле target.  
+elif grep $1 ./../targets > /dev/null
+then
+
+#	На случай если скрипт завершится аварийно, удаляем прежние бинарники и информацию о версии сборки.
+	for file in bin/$1/*
+	do	
+		if [ -e ${file} ]
+		then
+			echo "Delete ${file}"
+			rm ${file}
+		fi
+	done
+
+#	Заходим в папку цели сборки, собираем, возвращаемся в исходный каталог. 
+	cd bld/$1
+	cmake . || exit 1
+	make -j5 || exit 1 
+	cd ../..
+
+	# current date
+	date -u > bin/$1/lib${_NAME_}_info
+
+# 	Добавление информации о версии программы.
+	# last commit SHA1
+	git log -1 --pretty=format:%H >> bin/$1/lib${_NAME_}_info
+	echo " " >> bin/$1/lib${_NAME_}_info
+
+	# last commit date
+	git log -1 --pretty=format:%ad >> bin/$1/lib${_NAME_}_info
+	echo " " >> bin/$1/lib${_NAME_}_info
+
+	# current branch
+	git branch | grep "*" >> bin/$1/lib${_NAME_}_info
+	
+	# current target platform
+	echo "$1" >> bin/$1/lib${_NAME_}_info
+
+	if [ ! -e "./../lib/$1/lib${_NAME_}.so" ]; then
+		ln -s ./../../lib${_NAME_}/bin/$1/lib${_NAME_}.so ./../lib/$1/lib${_NAME_}.so
+	fi
+
+else
+	echo "Wrong argument."
+fi
+
+if [ ! -e "${_MAINDIR_}/include/${_NAME_}" ]; then
+	ln -s `pwd`/include/${_NAME_} ${_MAINDIR_}/include/${_NAME_}
+fi
