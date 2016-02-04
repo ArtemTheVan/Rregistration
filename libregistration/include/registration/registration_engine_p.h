@@ -2,10 +2,10 @@
 #define ESU_REGISTRATION_ENGINE_PRIVATE_H
 
 
-#include "esu_registration_engine.h"
-#include "esu_registration_table_manager.h"
-#include "esu_registration_events.h"
-#include "esu_registration_net.h"
+#include "registration_engine.h"
+#include "registration_table_manager.h"
+#include "registration_events.h"
+#include "registration_net.h"
 
 //#include <QtXml>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
@@ -15,11 +15,11 @@
 #endif
 
 #ifdef ESU_APPLICATION
-#include "esu_application.h"
-#include "esu_settings.h"
+#include "application.h"
+#include "settings.h"
 #endif
 
-#include <logger/esu_logger.h>
+#include <logger/logger.h>
 #include <storage/localstoragemanager.h>
 
 

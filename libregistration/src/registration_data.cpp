@@ -1,9 +1,9 @@
-#include "esu_registration_data.h"
+#include "registration_data.h"
 
 #ifdef ESU_NET_SYSTEM
-#include "esu_net_system_types.h"
+#include "net_system_types.h"
 #else
-#include "esu_registration_types_net.h"
+#include "registration_types_net.h"
 #endif
 
 

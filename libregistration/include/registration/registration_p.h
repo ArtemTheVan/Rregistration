@@ -1,8 +1,8 @@
 #ifndef ESU_REGISTRATION_P_H
 #define ESU_REGISTRATION_P_H
 
-#include "esu_registration.h"
-#include "esu_registration_engine.h"
+#include "registration.h"
+#include "registration_engine.h"
 
 
 class ESURegistrationPrivate

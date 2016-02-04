@@ -9,7 +9,7 @@
 #include <QtNetwork/qhostaddress.h>
 #include <QQueue>
 
-#include "esu_registration_data.h"
+#include "registration_data.h"
 
 
 struct RegistrationPackageDataNET

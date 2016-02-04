@@ -2,11 +2,11 @@
 #define ESU_REGISTRATION_EVENTS
 
 #ifdef ESU_APPLICATION
-#include "esu_core_event.h"
+#include "core_event.h"
 #else
 #include <QtCore/qcoreevent.h>
 #endif
-#include "esu_registration_data.h"
+#include "registration_data.h"
 
 
 #ifndef ESU_APPLICATION

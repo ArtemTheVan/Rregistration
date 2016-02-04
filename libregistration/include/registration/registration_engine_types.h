@@ -4,8 +4,8 @@
 #include <QtCore>
 #include <QtNetwork/qhostaddress.h>
 
-#include "esu_registration_data.h"
-#include "esu_registration_types_net.h"
+#include "registration_data.h"
+#include "registration_types_net.h"
 
 
 typedef QList<RegistrationUserInfo> RegistrationTableData;

@@ -1,8 +1,8 @@
 #ifndef ESU_STAFF_P
 #define ESU_STAFF_P
 
-#include "esu_staff_structure.h"
-#include "esu_staff_engine.h"
+#include "staff_structure.h"
+#include "staff_engine.h"
 
 
 class ESUStaffStructurePrivate

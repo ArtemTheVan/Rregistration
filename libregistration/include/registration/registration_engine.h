@@ -3,10 +3,10 @@
 
 #include <QObject>
 
-#include "esu_registration.h"
-#include "esu_registration_global.h"
-#include "esu_registration_engine_types.h"
-#include "esu_registration_table_manager.h"
+#include "registration.h"
+#include "registration_global.h"
+#include "registration_engine_types.h"
+#include "registration_table_manager.h"
 
 
 class ESURegistrationEnginePrivate;

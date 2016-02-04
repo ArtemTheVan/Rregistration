@@ -1,5 +1,5 @@
-#include "esu_staff_structure.h"
-#include "esu_staff_structure_p.h"
+#include "staff_structure.h"
+#include "staff_structure_p.h"
 
 
 // [ INIT/DESTROY ]: {{{

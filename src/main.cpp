@@ -2,8 +2,8 @@
 
 #include "global1.h"
 
-#include <staff/esu_staff_system.h>
-#include <registration/esu_registration.h>
+#include <staff/staff_system.h>
+#include <registration/registration.h>
 
 
 int main(int argc, char *argv[])

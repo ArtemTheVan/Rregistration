@@ -1,6 +1,6 @@
-#include "esu_registration_table_manager.h"
-#include "esu_registration_engine.h"
-#include "esu_registration_net.h"
+#include "registration_table_manager.h"
+#include "registration_engine.h"
+#include "registration_net.h"
 
 #include <storage/localstoragemanager.h>
 

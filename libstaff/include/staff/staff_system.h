@@ -4,7 +4,7 @@
 #include <QtCore>
 
 #include <interfaces/i_singleton.h>
-#include "esu_staff_structure.h"
+#include "staff_structure.h"
 
 
 #define esuStaff ESUStaffSystem::instance()

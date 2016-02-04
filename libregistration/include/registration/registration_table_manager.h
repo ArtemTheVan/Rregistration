@@ -1,11 +1,11 @@
 #ifndef ESU_REGISTRATION_TABLE_MANAGER_H
 #define ESU_REGISTRATION_TABLE_MANAGER_H
 
-#include "esu_registration_engine_types.h"
+#include "registration_engine_types.h"
 #ifdef ESU_NET_PROTO_SERVER
-#include "esu_net_system_types.h"
+#include "net_system_types.h"
 #else
-#include "esu_registration_types_net.h"
+#include "registration_types_net.h"
 #endif
 #include <memory>
 

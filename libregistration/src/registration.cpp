@@ -1,5 +1,5 @@
-#include "esu_registration.h"
-#include "esu_registration_p.h"
+#include "registration.h"
+#include "registration_p.h"
 
 #include <staff/staff_globals.h>
 

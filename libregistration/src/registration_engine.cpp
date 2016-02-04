@@ -1,6 +1,6 @@
-#include "esu_registration_engine.h"
-#include "esu_registration_engine_p.h"
-#include "esu_registration_net.h"
+#include "registration_engine.h"
+#include "registration_engine_p.h"
+#include "registration_net.h"
 
 #include <QDomDocument>
 

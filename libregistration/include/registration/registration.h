@@ -3,8 +3,8 @@
 
 #include <QtCore>
 
-#include "esu_registration_data.h"
-#include "esu_registration_global.h"
+#include "registration_data.h"
+#include "registration_global.h"
 
 #include <interfaces/i_singleton.h>
 

@@ -1,5 +1,5 @@
-#include "esu_staff_system.h"
-#include "esu_staff_system_p.h"
+#include "staff_system.h"
+#include "staff_system_p.h"
 
 #ifdef ESU_UI_QUICK
 #include <QtQml>

@@ -1,7 +1,7 @@
 #ifndef ESUTZ_MILITARY_STAFF_P_H
 #define ESUTZ_MILITARY_STAFF_P_H
 
-#include "esu_staff_system.h"
+#include "staff_system.h"
 #include "staff_division.h"
 
 #include <QtXml>
