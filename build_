@@ -57,7 +57,7 @@ export _DEFARCH_="${1}"
 		export _QTDIR_="/usr/share/qt4"
 		export _QTMOC_="/usr/bin/moc-qt4"
 		#-fsanitize=undefined,address
-		export CXXFLAGSENVS="-pipe -O3 -s -Wall ${DEFNODEBUG} -Wformat -Wformat-security -Winit-self -Wempty-body -Winit-self -Wignored-qualifiers -Wformat-security"
+		export CXXFLAGSENVS="-pipe -O3 -W ${DEFNODEBUG} -fpermissive -Wformat -Wformat-security -Winit-self -Wempty-body -Winit-self -Wignored-qualifiers -Wformat-security"
 	fi
 	if [ "$1" == "arm" ]
 	then

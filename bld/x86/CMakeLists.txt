@@ -28,8 +28,8 @@ SET(CMAKE_CXX_FLAGS "$ENV{CXXFLAGSENVS} $ENV{DEFENVS} ${_INC_SOURCES_}")
 
 SET(_ROOTFSLIBDIR_ "-L/usr/lib/i386-linux-gnu -Wl,--rpath-link=/usr/lib/i386-linux-gnu")
 SET(_TARGETLIBDIR_ "-L${CMAKE_CURRENT_SOURCE_DIR}/../../lib/$ENV{_DEFARCH_} -Wl,-rpath,${CMAKE_CURRENT_SOURCE_DIR}/../../lib/$ENV{_DEFARCH_}")
-SET(_LIBS_ "")
-SET(CMAKE_EXE_LINKER_FLAGS "${_ROOTFSLIBDIR_} ${_TARGETLIBDIR_}${_LIBS_}")
+SET(_LIBS_ "-lstdc++ -lstaff -lregistration -lstorage")
+SET(CMAKE_EXE_LINKER_FLAGS "${_ROOTFSLIBDIR_} ${_TARGETLIBDIR_} ${_LIBS_}")
 
 include_directories(${include_directories} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 

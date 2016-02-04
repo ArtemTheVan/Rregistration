@@ -91,9 +91,9 @@ protected:
 private:
     Q_DECLARE_PRIVATE_D(StaffObject::d_ptr, StaffObject)
 
-//    Q_FRIEND(ESUStaffEngine) //todo
-//    Q_FRIEND(ESUStaffSystemPrivate)
-//    Q_FRIEND(ESUStaffStructure)
+    Q_FRIEND(ESUStaffEngine) //todo
+    Q_FRIEND(ESUStaffSystemPrivate)
+    Q_FRIEND(ESUStaffStructure)
 };
 
 typedef QList<StaffObject> StaffObjectList;
