@@ -34,8 +34,8 @@ class ESURegistrationEnginePrivate
 public:
     ESURegistrationEnginePrivate(ESURegistrationEngine* parent = nullptr):
         q_ptr(parent), base(nullptr)/*, ui(nullptr)*/
-      , fileRules(":/mods/registration/conf/registration_rules.conf")
-      , fileRegistrarList("/media/card/esutz/registration/registrar_list.json")
+      , fileRules("./../../conf/registration_rules.conf")
+      , fileRegistrarList("./../../conf/registration.json")
       , isRegistered(false), isRegistrar(false), profileName(""), profileAddress(QHostAddress::Null)
       , registrarReady(false), registrarCheckTime(0)
     {

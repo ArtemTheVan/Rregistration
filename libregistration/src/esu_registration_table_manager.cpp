@@ -13,7 +13,7 @@
 ESURegistrationTableManager::ESURegistrationTableManager(QObject *parent):
     QObject(parent)
   , m_ready(false)
-  , m_filePath("/media/card/esutz/registration/registration_table.xml")
+  , m_filePath("./../../conf/registration_table.xml")
 {
     QFileInfo fileInfo(m_filePath);
     QDir fileDir = fileInfo.absoluteDir();

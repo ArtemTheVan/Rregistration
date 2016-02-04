@@ -217,7 +217,7 @@ void ESURegistrationEngine::clearConfiguration()
 
 bool ESURegistrationEngine::loadRegistrarList()
 {
-    QFileInfo info("/home/programmer/.config/mkbcompas/registration_config.xml"); //todo передать в качестве аргумента
+    QFileInfo info("./../../conf/registration_config.xml"); //todo передать в качестве аргумента
     QFile fileData(info.absoluteFilePath());
     QString addr;
     QDomDocument domDoc("RegistrarList");
@@ -226,10 +226,6 @@ bool ESURegistrationEngine::loadRegistrarList()
     qDebug() <<"fileData.exists() "<< fileData.exists();
 
     do {
-        if( !fileData.exists() ) {
-            fileData.setFileName(":/mods/registration/conf/registration_config.xml"); //todo возможно это и не надо
-            if( !fileData.exists() ) break;
-        }
 
         if( !fileData.open(QIODevice::ReadOnly) ) break;
         if( !domDoc.setContent(fileData.readAll()) ) break;

@@ -174,7 +174,7 @@ static void init(QHash<QString, staff::DivisionType>& data)
 }
 
 
-static bool loadDescription()
+static bool staff::loadDescription()
 {
     QHash<QString, QString>& dutyNameDescr = dutyNameDescrData;
     QHash<QString, QString>& divNameDescr = divisionNameDescrData;
@@ -182,7 +182,7 @@ static bool loadDescription()
     QString value;
 
     QDomDocument docXml("description");
-    QFile fileXml(":/mods/staff/conf/staff_info.xml");
+    QFile fileXml("./../../conf/staff_info.xml");
 
     if( !fileXml.exists() || !fileXml.open(QIODevice::ReadOnly) )
         return(false);

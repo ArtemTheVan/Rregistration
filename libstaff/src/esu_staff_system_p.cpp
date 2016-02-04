@@ -7,9 +7,9 @@
 ESUStaffSystemPrivate::ESUStaffSystemPrivate(ESUStaffSystem *parent):
     q_ptr(parent)
   , ready(false)
-  , structureFile(":/mods/staff/conf/staff_structure.xml")
+  , structureFile("./../../conf/staff_structure.xml")
   //structureFile("mods/military_staff/conf/staff_structure.xml")
-  , staffFile("/media/card/esutz/military_staff/staff.xml")
+  , staffFile("./../../conf/staff.xml")
   , staffDocXML(QDomDocument("MilitaryStaffXML"))
   , structureDocXML(QDomDocument("MilitaryStaffStructureXML"))
 {

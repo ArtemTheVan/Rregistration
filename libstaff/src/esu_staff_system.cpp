@@ -40,7 +40,7 @@ void ESUStaffSystem::declareQmlTypes()
 
 void ESUStaffSystem::loadData()
 {
-    d->data.load(":/mods/staff/conf/staff_structure_msb.xml");
+    d->data.load("./../../conf/staff_structure_msb.xml");
 }
 
 

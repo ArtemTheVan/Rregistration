@@ -12,8 +12,8 @@ class ESUStaffStructurePrivate
 public:
     ESUStaffStructurePrivate(ESUStaffStructure* parent = nullptr):
         q_ptr(parent)
-      , defaultStructFile("qrc:/mods/staff/conf/staff_structure_msb.xml")
-      , defaultStaffFile("/media/card/esutz/staff/staff.xml")
+      , defaultStructFile("qrc:./../../conf/staff_structure_msb.xml")
+      , defaultStaffFile("./../../conf/staff.xml")
       , currentFile("")
     { }
 

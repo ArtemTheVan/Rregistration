@@ -168,6 +168,8 @@ namespace staff
 
     enum Health{ Healthy, Damaged, Killed, HealthStateCount, UnknownHealth };
 
+    static bool loadDescription();
+
     int             getDivisionSize(DivisionType divType);
     RankCategory    getRankCategoryByRank(UnitRank rank);
     //-----------------------------------------------------------------------------------------------
