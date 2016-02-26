@@ -584,11 +584,12 @@ QByteArray ESURegistrationTableManager::convertToJSON(FormatType format)
         QJsonObject jsonRootObj;
         QJsonArray jsonRecordArray;
 
-        for( RegistrationUserInfo& r: m_tableData ) {
+        RegistrationTableData::iterator it = m_tableData.begin();
+        for( ; it != m_tableData.end(); ++it ) {
             QJsonObject jsonRecord;
-            jsonRecord["role"] = r.role;
-            jsonRecord["address"] = r.address.toString();
-            jsonRecord["name"] = r.name;
+            jsonRecord["role"] = it->role;
+            jsonRecord["address"] = it->address.toString();
+            jsonRecord["name"] = it->name;
             jsonRecordArray.append(jsonRecord);
         }
 

@@ -45,6 +45,9 @@ public:
     ESURegistrationTableManager *tableManager() const;
     RegistrationUserInfo& registrationData();
 
+    void setConfigurationFilePath(const QString& path);
+
+
 public:
     // [ Opertation status ]:
     void acceptOperation();
@@ -78,6 +81,10 @@ public:
 
     // [ General methods ]:
     void registerCurrentData();
+    /*!
+     * \brief registerProfile - регистрация сервера (регистратора) с занесением в базу данных и синхронизацией
+     */
+    void registerProfile();
 
 public Q_SLOTS:
     void runUserRegistration();

@@ -110,6 +110,10 @@ protected:
     ~ESURegistration();
 
 public:
+    // [PROPERTIES NON-QML]:
+    void setConfigurationFilePath(const QString& path);
+
+public:
     // [PROPERTIES]:
     RegistrationState registrationState() const;
     void setRegistrationState(RegistrationState regState);
@@ -249,19 +253,47 @@ public:
 
 public Q_SLOTS:
     // [ USER INTERFACE ]:
+    /*!
+     * \brief registerUser - Запуск процесса регистрации с клиента
+     */
     void registerUser();
+    /*!
+     * \brief changeUser - Запуск процесса смена профиля с клиента
+     */
     void changeUser();
 
+    /*!
+     * \brief cancelRegistration - Отмена процедуры регистрации
+     */
     void cancelRegistration();
+    /*!
+     * \brief clearCurrentOperation - Сброс текущий задачи (останов). Сброс все состояний.
+     */
     void clearCurrentOperation();
 
-    void clearUserData();    
+    /*!
+     * \brief clearUserData - очистка данных регистрации (только при сбросе/смене профиля)
+     */
+    void clearUserData();
+    /*!
+     * \brief clearChoosedData - очистка данных полей/свойств (QML interface)
+     */
     void clearChoosedData();
+    /*!
+     * \brief initChoosedData - инициализация свойств и/или полей из
+     *  существующих данных о регистрации (QML interface)
+     */
+    void initChoosedData();
 
     void acceptRegistrationData();
     void saveConfiguration();
 
     // [ REGISTRAR INTERFACE ]:
+    /*!
+     * \brief registerProfile - зарегистрировать планшет регистратора (сервера)
+     */
+    void registerProfile();
+
     void acceptRequest(const QString& address);
     void rejectRequest(const QString& address);
 

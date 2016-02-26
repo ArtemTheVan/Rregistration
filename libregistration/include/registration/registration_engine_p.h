@@ -34,8 +34,7 @@ class ESURegistrationEnginePrivate
 public:
     ESURegistrationEnginePrivate(ESURegistrationEngine* parent = nullptr):
         q_ptr(parent), base(nullptr)/*, ui(nullptr)*/
-      , fileRules("./../../conf/registration_rules.conf")
-      , fileRegistrarList("./../../conf/registration.json")
+      , configurationFileName(""), configurationFile("")
       , isRegistered(false), isRegistrar(false), profileName(""), profileAddress(QHostAddress::Null)
       , registrarReady(false), registrarCheckTime(0)
     {
@@ -49,6 +48,9 @@ public:
     void init()
     {
         Q_Q(ESURegistrationEngine);
+
+        configurationFileName = "registration_config.xml";
+        configurationFile = QString(ESU_APP_CONFIG_PATH) + configurationFileName;
 
 #ifdef ESU_NET_PROTO_SERVER
         RegistrationProtoInterfaceNET& net = esuNetProto.registrationInterface();
@@ -82,8 +84,8 @@ public:
     ESURegistration         *base;
 //    ESURegistrationUI       *ui;
 
-    QString fileRules;
-    QString fileRegistrarList;
+    QString configurationFileName;
+    QString configurationFile;
 
     bool isRegistered;
     bool isRegistrar;
@@ -132,6 +134,7 @@ void ESURegistrationEnginePrivate::setUserTask(ESURegistration::Task t)
     base->setCurrentTask(t);
     _u.userTasks.enqueue(t);
 }
+
 
 void ESURegistrationEnginePrivate::setRegistrarTask(ESURegistration::Task t)
 {

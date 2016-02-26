@@ -24,6 +24,14 @@ ESURegistration::~ESURegistration()
 }
 
 // }}} [ INIT/DESTROY ]
+// [PROPERTIES NON-QML]: {{{
+
+void ESURegistration::setConfigurationFilePath(const QString &path)
+{
+    d->engine.setConfigurationFilePath( path );
+}
+
+// }}}
 // [PROPERTIES]: {{{
 
 // [ REGISTRATION STATE ]:
@@ -667,6 +675,13 @@ void ESURegistration::saveConfiguration()
 {
     d->engine.saveConfiguration();
 }
+
+
+void ESURegistration::registerProfile()
+{
+    d->engine.registerProfile();
+}
+
 
 // [ REGISTRAR INTERFACE ]:
 

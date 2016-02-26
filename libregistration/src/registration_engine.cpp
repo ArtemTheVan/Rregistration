@@ -52,6 +52,15 @@ RegistrationUserInfo &ESURegistrationEngine::registrationData()
     return( d->_u.registrationData );
 }
 
+void ESURegistrationEngine::setConfigurationFilePath(const QString &path)
+{
+    if( d->configurationFile != path ) {
+        d->configurationFile = path;
+        QFileInfo info(d->configurationFile);
+        d->configurationFile = info.fileName();
+    }
+}
+
 // }}} [ PROPERTIES ]
 // [ Opertation status ]: {{{
 
@@ -217,18 +226,32 @@ void ESURegistrationEngine::clearConfiguration()
 
 bool ESURegistrationEngine::loadRegistrarList()
 {
-    QFileInfo info("./../../conf/registration_config.xml"); //todo передать в качестве аргумента
-    QFile fileData(info.absoluteFilePath());
+    QFile fileDevice;
+    fileDevice.setFileName( d->configurationFile );
+
     QString addr;
     QDomDocument domDoc("RegistrarList");
     QDomElement rootElement;
 
-    qDebug() <<"fileData.exists() "<< fileData.exists();
-
     do {
+        if( !QFile::exists(d->configurationFile) ) {
+            fileDevice.setFileName(":/mods/registration/conf/registration_config.xml");
+            if( !fileDevice.open(QIODevice::ReadOnly) ) break;
+            QByteArray data = fileDevice.readAll();
+            fileDevice.close();
 
-        if( !fileData.open(QIODevice::ReadOnly) ) break;
-        if( !domDoc.setContent(fileData.readAll()) ) break;
+            if( data.isEmpty() ) break;
+            fileDevice.setFileName( d->configurationFile );
+            if( !fileDevice.open(QIODevice::ReadWrite | QIODevice::Truncate) ) break;
+            fileDevice.write(data);
+            fileDevice.flush();
+            fileDevice.seek(0LL);
+
+        } else {
+            if( !fileDevice.open(QIODevice::ReadWrite) ) break;
+        }
+
+        if( !domDoc.setContent(fileDevice.readAll()) ) break;
 
         rootElement = domDoc.firstChildElement("RegistrarList");
         if( rootElement.isNull() || !rootElement.hasChildNodes() ) break;
@@ -551,6 +574,30 @@ void ESURegistrationEngine::registerCurrentData()
 
     acceptOperation();
 
+    QMetaObject::invokeMethod(this, "saveConfiguration", Qt::QueuedConnection);
+}
+
+
+void ESURegistrationEngine::registerProfile()
+{
+    QString msg = "Планшет зарегистрирован как:\n" + d->base->choosedRole();
+    d->_u.registrationData = d->base->choosedData();
+    d->_u.registrationData.time = std::time(nullptr);
+    d->_u.registrationData.address = d->profileAddress;
+    d->isRegistered = true;
+    d->tableManager.addRecord(d->_u.registrationData);
+
+    d->base->setRegistrationData(d->_u.registrationData);
+
+    d->base->setCurrentMessage(msg);
+
+    d->base->setRegistrationState(ESURegistration::RegisteredState);
+    d->base->setState(ESURegistration::SteadyState);
+    d->base->setOperationState(ESURegistration::NoOperationState);
+    d->base->setError(ESURegistration::NoErrors);
+
+    qApp->processEvents();
+    acceptOperation();
     QMetaObject::invokeMethod(this, "saveConfiguration", Qt::QueuedConnection);
 }
 
