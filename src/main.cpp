@@ -1,44 +1,44 @@
 #include <QApplication>
+#include <QStringList>
+
+//#define QT4_ETU
+//#define NEW_PROTOBUF
 
 #include "global1.h"
-
-#include <staff/staff_system.h>
+#include "test.h"
 #include <registration/registration.h>
+#include <registration/registration_engine.h>
+#include <netdevice/netdevice.h>
+
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    esuStaff->loadData();
-//    esuReg->ui()->createModels();
+    QTextCodec::setCodecForCStrings( QTextCodec::codecForName("utf8") );
 
-    esuReg->initialization();
+#ifdef QT4_ETU
+    esuReg->setConfigurationFilePath("./../../conf/registration_config.xml");
+#endif
 
-    StaffDivision root = esuStaff->data().rootDivision();
-    qDebug() << root.nameFull();
+    Test test;
 
-    esuStaff->printDivisions();
+    QString PHOTO_DIR = "";
+    QStringList netIfaces;
+    netIfaces<<"radio0";
+    NetDevice *netdev = NetDevice::GetNetDevice(PHOTO_DIR, &netIfaces);
+    //    NetDevice *netdev = new NetDevice("123");
+    QObject::connect(netdev, SIGNAL(connectionChanged(int, int)), &test, SLOT(run(int,int)));
+    QObject::connect(netdev, SIGNAL(onReceivedData(RegistrationPackageNET)), esuReg->engine(), SLOT(onReceivedData(RegistrationPackageNET)));
 
-    foreach (StaffDivision div, root.divisions()) {
-        //        qDebug() << div.nameFull();
-        qDebug() <<"-"<< div.name();
+    QObject::connect(esuReg->engine(), SIGNAL(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)), netdev, SLOT(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)));
+    QObject::connect(esuReg->engine()->tableManager(), SIGNAL(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)), netdev, SLOT(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)));
+    QObject::connect(esuReg, SIGNAL(currentMessageChanged()), &test, SLOT(showCurrentMessage()));
 
-        foreach (StaffDivision div2, div.divisions()) {
-            //            qDebug() << div2.nameFull();
-            qDebug() <<"--"<< div2.name();
-            //            qDebug() <<"--"<< div2.nameBase();
-            qDebug() <<"--"<< div2.nameDecription();
-            //            qDebug() <<"--"<< div2.decription();
-            //            qDebug() <<"--"<< div2.note();
+    netdev->ctlIface(true, NetDevice::R_Module, "/dev/ttyS0", "115200");
 
-//            qDebug() <<"--"<< div2.toBaseUnit().dutyName();
-//            qDebug() <<"--"<< div2.toCommander().dutyName();
-//            //            qDebug() <<"--"<< div2.toDivision().dutyName();
-//            qDebug() <<"--"<< div2.toSoldier().dutyName();
-//            //            qDebug() <<"--"<< div2.toObject().dutyName();
-        }
-    }
 
     return a.exec();
 }
+

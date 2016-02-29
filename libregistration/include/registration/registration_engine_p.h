@@ -48,7 +48,6 @@ public:
     void init()
     {
         Q_Q(ESURegistrationEngine);
-
         configurationFileName = "registration_config.xml";
         configurationFile = QString(ESU_APP_CONFIG_PATH) + configurationFileName;
 
@@ -134,7 +133,6 @@ void ESURegistrationEnginePrivate::setUserTask(ESURegistration::Task t)
     base->setCurrentTask(t);
     _u.userTasks.enqueue(t);
 }
-
 
 void ESURegistrationEnginePrivate::setRegistrarTask(ESURegistration::Task t)
 {

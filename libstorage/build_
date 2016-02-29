@@ -76,5 +76,5 @@ else
 fi
 
 if [ ! -e "${_MAINDIR_}/include/${_NAME_}" ]; then
-	ln -s `pwd`/include/${_NAME_} ${_MAINDIR_}/include/${_NAME_}
+	ln -s ./../lib${_NAME_}/include/${_NAME_} ${_MAINDIR_}/include/${_NAME_}
 fi

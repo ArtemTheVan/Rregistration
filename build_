@@ -23,7 +23,7 @@ fi
 echo "build for target $1"
 #export DEFENVS="-DNPI"
 #export DEFENVS="-DKPP"
-export DEFENVS="-DZKPK"
+export DEFENVS="-DHOST -DQT4_ETU -DZKPK -DNEW_PROTOBUF"
 export _MAINDIR_=`pwd`
 #export DEFNODEBUG="-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT -DNDEBUG"
 export DEFNODEBUG="-g"
@@ -53,7 +53,6 @@ export _DEFARCH_="${1}"
 	if [ "$1" == "x86" ]
 	then
 		echo "building for $1"
-		export DEFENVS="-DHOST ${DEFENVS}"
 		export _QTDIR_="/usr/share/qt4"
 		export _QTMOC_="/usr/bin/moc-qt4"
 		#-fsanitize=undefined,address

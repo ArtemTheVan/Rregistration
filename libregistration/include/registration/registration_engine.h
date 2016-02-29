@@ -2,6 +2,7 @@
 #define ESU_REGISTRATION_ENGINE_H
 
 #include <QObject>
+#include <QStringList>
 
 #include "registration.h"
 #include "registration_global.h"
@@ -46,8 +47,6 @@ public:
     RegistrationUserInfo& registrationData();
 
     void setConfigurationFilePath(const QString& path);
-
-
 public:
     // [ Opertation status ]:
     void acceptOperation();
@@ -55,7 +54,7 @@ public:
 
 public Q_SLOTS:
     // [ Configuration ]:
-    void loadConfiguration();
+    void loadConfiguration(const QString&);
     void saveConfiguration();
     void clearConfiguration();
     bool loadRegistrarList();
@@ -111,6 +110,10 @@ public Q_SLOTS:
 Q_SIGNALS:
     void execUserRegistration();
     void execRegistrarTasks();
+
+#ifndef ESU_NET_PROTO_SERVER
+    void emitsendRegistrationMsg(RegistrationPackageNET, QStringList addrs=QStringList());
+#endif
 
 protected:
     ESURegistrationEnginePrivate* d;

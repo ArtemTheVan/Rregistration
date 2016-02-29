@@ -89,6 +89,10 @@ protected Q_SLOTS:
 Q_SIGNALS:
     void contentUpdated();
 
+#ifndef ESU_NET_PROTO_SERVER
+    void emitsendRegistrationMsg(RegistrationPackageNET, QStringList addrs=QStringList());
+#endif
+
 protected:
     bool m_ready;
     QString m_filePath;

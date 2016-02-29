@@ -274,7 +274,7 @@ public Q_SLOTS:
     /*!
      * \brief clearUserData - очистка данных регистрации (только при сбросе/смене профиля)
      */
-    void clearUserData();
+    void clearUserData();    
     /*!
      * \brief clearChoosedData - очистка данных полей/свойств (QML interface)
      */
@@ -283,7 +283,7 @@ public Q_SLOTS:
      * \brief initChoosedData - инициализация свойств и/или полей из
      *  существующих данных о регистрации (QML interface)
      */
-    void initChoosedData();
+//    void initChoosedData(); //закомментировано //todo добавить тело функции
 
     void acceptRegistrationData();
     void saveConfiguration();
@@ -293,7 +293,6 @@ public Q_SLOTS:
      * \brief registerProfile - зарегистрировать планшет регистратора (сервера)
      */
     void registerProfile();
-
     void acceptRequest(const QString& address);
     void rejectRequest(const QString& address);
 
@@ -355,7 +354,7 @@ Q_SIGNALS:
     void registrationTableUpdated();
 
 public Q_SLOTS:
-    void initialization();
+    void initialization(const QString&);
 
     void onClearSettings();
     void onClearDatabase();

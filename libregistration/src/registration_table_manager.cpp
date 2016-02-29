@@ -273,6 +273,8 @@ void ESURegistrationTableManager::syncData()
             p.addRecord(record);
 #ifdef ESU_NET_PROTO_SERVER
             esuNet.sendRegistrationMsg(p);
+#else
+            emit emitsendRegistrationMsg(p);
 #endif
         }
     }
@@ -294,6 +296,8 @@ void ESURegistrationTableManager::syncRecord(const QHostAddress &address)
             p.addRecord(record);
 #ifdef ESU_NET_PROTO_SERVER
             esuNet.sendRegistrationMsg(p);
+#else
+            emit emitsendRegistrationMsg(p);
 #endif
             break;
         }
@@ -312,6 +316,8 @@ void ESURegistrationTableManager::syncAllData()
         p.addRecord(record);
 #ifdef ESU_NET_PROTO_SERVER
         esuNet.sendRegistrationMsg(p);
+#else
+        emit emitsendRegistrationMsg(p);
 #endif
     }
 

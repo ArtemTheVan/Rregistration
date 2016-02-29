@@ -675,13 +675,10 @@ void ESURegistration::saveConfiguration()
 {
     d->engine.saveConfiguration();
 }
-
-
 void ESURegistration::registerProfile()
 {
     d->engine.registerProfile();
 }
-
 
 // [ REGISTRAR INTERFACE ]:
 
@@ -730,9 +727,9 @@ void ESURegistration::rejectRegistrationAll()
 // }}} [ BASE INTERFACE/QML ]
 // [ Q_EVENTS ]: {{{
 
-void ESURegistration::initialization()
+void ESURegistration::initialization(const QString &selfIp)
 {
-    d->engine.loadConfiguration();
+    d->engine.loadConfiguration(selfIp); //передать в аргументе свой ip
 }
 
 

@@ -5,7 +5,6 @@
 #include <QtCore/qdatetime.h>
 #include <QtNetwork/qhostaddress.h>
 
-
 #include <ctime>
 
 

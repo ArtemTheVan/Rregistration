@@ -13,7 +13,6 @@
 #endif
 
 #define ESU_APP_CONFIG_PATH "/usr/local/etc/nic/"
-
 #else
 
 #include "esu_global.h"

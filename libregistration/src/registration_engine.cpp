@@ -60,7 +60,6 @@ void ESURegistrationEngine::setConfigurationFilePath(const QString &path)
         d->configurationFile = info.fileName();
     }
 }
-
 // }}} [ PROPERTIES ]
 // [ Opertation status ]: {{{
 
@@ -77,9 +76,10 @@ void ESURegistrationEngine::rejectOperation()
 // }}}
 // [ CONFIGURATION ][ INVOKABLE ]: {{{
 
-void ESURegistrationEngine::loadConfiguration()
+void ESURegistrationEngine::loadConfiguration(const QString &selfIp) //передать в аргументе свой ip
 {
-    if( !loadRegistrarList() ) return;
+    if( !loadRegistrarList() )
+        return;
     d->base->setRegistrarCount(d->registrarList.size());
     if( d->registrarList.count() == 1 )
         d->base->setCurrentRegistrarIndex(0);
@@ -91,9 +91,11 @@ void ESURegistrationEngine::loadConfiguration()
     // [ Profile init ]:
 #ifdef ESU_NET_SYSTEM
     d->profileAddress = esuNet.localAddress();
-    if( d->profileAddress.isNull() ) return;
+    if( d->profileAddress.isNull() )
+        return;
 #else
-    d->profileAddress = "::1"; //это мой адрес?
+    //    d->profileAddress = "::1"; //это мой адрес?
+    d->profileAddress = QHostAddress(selfIp);
 #endif
     //todo убрать esuNet
 
@@ -106,24 +108,24 @@ void ESURegistrationEngine::loadConfiguration()
         d->isRegistered = true;
 
 #ifdef ESU_APPLICATION
-    ESUSettings::set(ESUSettings::ProfileRegistered) = d->isRegistered;
-    ESUSettings::set(ESUSettings::ProfileRole) = d->_u.registrationData.role;
-    ESUSettings::set(ESUSettings::ProfileRegistrationTime) = d->_u.registrationData.timeString;
+        ESUSettings::set(ESUSettings::ProfileRegistered) = d->isRegistered;
+        ESUSettings::set(ESUSettings::ProfileRole) = d->_u.registrationData.role;
+        ESUSettings::set(ESUSettings::ProfileRegistrationTime) = d->_u.registrationData.timeString;
 
-    if( d->_u.registrationData.hasUserName() )
-        ESUSettings::set(ESUSettings::ProfileName) = d->_u.registrationData.name;
+        if( d->_u.registrationData.hasUserName() )
+            ESUSettings::set(ESUSettings::ProfileName) = d->_u.registrationData.name;
 
-    if( d->_u.registrationData.hasUserSpeciality() )
-        ESUSettings::set(ESUSettings::ProfileSpeciality) = d->_u.registrationData.militarySpeciality;
+        if( d->_u.registrationData.hasUserSpeciality() )
+            ESUSettings::set(ESUSettings::ProfileSpeciality) = d->_u.registrationData.militarySpeciality;
 
-    if( d->_u.registrationData.hasUserBirthday() )
-        ESUSettings::set(ESUSettings::ProfileBirthDate) = d->_u.registrationData.birthDateString();
+        if( d->_u.registrationData.hasUserBirthday() )
+            ESUSettings::set(ESUSettings::ProfileBirthDate) = d->_u.registrationData.birthDateString();
 
-    if( d->_u.registrationData.hasUserRank() )
-        ESUSettings::set(ESUSettings::ProfileRank) = d->_u.registrationData.rank;
+        if( d->_u.registrationData.hasUserRank() )
+            ESUSettings::set(ESUSettings::ProfileRank) = d->_u.registrationData.rank;
 
-    if( d->_u.registrationData.hasStreetAddress() )
-        ESUSettings::set(ESUSettings::ProfileStreetAddress) = d->_u.registrationData.streetAddress;
+        if( d->_u.registrationData.hasStreetAddress() )
+            ESUSettings::set(ESUSettings::ProfileStreetAddress) = d->_u.registrationData.streetAddress;
 #endif
 
     } else {
@@ -132,7 +134,7 @@ void ESURegistrationEngine::loadConfiguration()
         d->base->setRegistrationState(ESURegistration::UnregisteredState);
     }
 
-    // Проверяем, являемся ли мы регистратором    
+    // Проверяем, являемся ли мы регистратором
     if( d->registrarMain.address == d->profileAddress ) {
         d->isRegistrar = true;
         d->base->setProfile( ESURegistration::RegistrarMainProfile );
@@ -164,7 +166,7 @@ void ESURegistrationEngine::saveConfiguration()
     // Сохранение настроек профиля
 #ifdef ESU_APPLICATION
     ESUSettings::set(ESUSettings::ProfileRegistered) = d->isRegistered;
-    ESUSettings::set(ESUSettings::ProfileRole) = d->_u.registrationData.role;    
+    ESUSettings::set(ESUSettings::ProfileRole) = d->_u.registrationData.role;
     ESUSettings::set(ESUSettings::ProfileRegistrationTime) = d->_u.registrationData.timeString;
 
     if( d->_u.registrationData.hasUserName() )
@@ -207,7 +209,7 @@ void ESURegistrationEngine::clearConfiguration()
 {
     d->base->setRegistrationState(ESURegistration::UnregisteredState);
     d->base->clearRegistrationData();
-    d->_u.registrationData.clear(); 
+    d->_u.registrationData.clear();
 
 #ifdef ESU_APPLICATION
     ESUSettings::set(ESUSettings::ProfileRegistered) = QVariant(d->isRegistered);
@@ -228,14 +230,18 @@ bool ESURegistrationEngine::loadRegistrarList()
 {
     QFile fileDevice;
     fileDevice.setFileName( d->configurationFile );
-
     QString addr;
     QDomDocument domDoc("RegistrarList");
     QDomElement rootElement;
 
+
     do {
         if( !QFile::exists(d->configurationFile) ) {
+#ifdef QT4_ETU
+            fileDevice.setFileName("./../../conf/registration_config.xml");
+#else
             fileDevice.setFileName(":/mods/registration/conf/registration_config.xml");
+#endif
             if( !fileDevice.open(QIODevice::ReadOnly) ) break;
             QByteArray data = fileDevice.readAll();
             fileDevice.close();
@@ -284,8 +290,8 @@ bool ESURegistrationEngine::loadRegistrarList()
 
         if( !d->registrarList.isEmpty() ) {
             if( d->registrarMain.address.isNull() ) {
-                 d->registrarMain = d->registrarList.first();
-                 d->registrarMain.main = true;
+                d->registrarMain = d->registrarList.first();
+                d->registrarMain.main = true;
             }
             return( true );
         }
@@ -305,8 +311,11 @@ void ESURegistrationEngine::sendSystemMsg(Message message, const QString &addr)
 #ifdef ESU_NET_PROTO_SERVER
     esuNet.sendRegistrationMsg(RegistrationPackageNET( int(message) ), addr);
 #else
-    Q_UNUSED(message);
-    Q_UNUSED(addr);
+
+    emit emitsendRegistrationMsg( RegistrationPackageNET(int(message)), QStringList(addr));
+
+    //    Q_UNUSED(message);
+    //    Q_UNUSED(addr);
 #endif
 }
 
@@ -316,8 +325,11 @@ void ESURegistrationEngine::sendSystemMsgWide(Message message, const QStringList
 #ifdef ESU_NET_PROTO_SERVER
     esuNet.sendRegistrationMsg(RegistrationPackageNET( int(message) ), addrs);
 #else
-    Q_UNUSED(message);
-    Q_UNUSED(addrs);
+
+    emit emitsendRegistrationMsg( RegistrationPackageNET(int(message)), addrs);
+
+    //    Q_UNUSED(message);
+    //    Q_UNUSED(addrs);
 #endif
 }
 
@@ -325,14 +337,25 @@ void ESURegistrationEngine::sendSystemMsgWide(Message message, const QStringList
 void ESURegistrationEngine::sendUserMsg(const RegistrationPackageNET &p, const QString &addr)
 {  
 #ifdef ESU_NET_PROTO_SERVER
-    if( addr.isEmpty() ) {
+    if( addr.isEmpty() )
+    {
         esuNet.sendRegistrationMsg(p, d->registrarMain.address.toString());
-    } else {
+    } else
+    {
         esuNet.sendRegistrationMsg(p, addr);
     }
 #else
-    Q_UNUSED(p);
-    Q_UNUSED(addr);
+
+    if( addr.isEmpty() )
+    {
+        emit emitsendRegistrationMsg( p , QStringList(d->registrarMain.address.toString()));
+    } else
+    {
+        emit emitsendRegistrationMsg( p , QStringList(addr));
+    }
+
+    //    Q_UNUSED(p);
+    //    Q_UNUSED(addr);
 #endif
 }
 
@@ -342,8 +365,10 @@ void ESURegistrationEngine::sendRegistrationMsg(const RegistrationPackageNET &p,
 #ifdef ESU_NET_PROTO_SERVER
     esuNet.sendRegistrationMsg(p, addr);
 #else
-    Q_UNUSED(p);
-    Q_UNUSED(addr);
+    emit emitsendRegistrationMsg(p, QStringList(addr));
+
+    //    Q_UNUSED(p);
+    //    Q_UNUSED(addr);
 #endif
 }
 
@@ -353,8 +378,10 @@ void ESURegistrationEngine::sendErrorMsg(ESURegistration::Error error, const QSt
 #ifdef ESU_NET_PROTO_SERVER
     esuNet.sendRegistrationMsg(RegistrationPackageNET( (int)ErrorMsg, (int)error ), addr);
 #else
-    Q_UNUSED(error);
-    Q_UNUSED(addr);
+    emit emitsendRegistrationMsg(RegistrationPackageNET( (int)ErrorMsg, (int)error ), QStringList(addr));
+
+    //    Q_UNUSED(error);
+    //    Q_UNUSED(addr);
 #endif
 }
 
@@ -363,8 +390,10 @@ void ESURegistrationEngine::sendErrorMsg(ESURegistration::Error error, const QSt
 #ifdef ESU_NET_PROTO_SERVER
     esuNet.sendRegistrationMsg(RegistrationPackageNET( (int)ErrorMsg, (int)error ), addrs);
 #else
-    Q_UNUSED(error);
-    Q_UNUSED(addrs);
+    emit emitsendRegistrationMsg(RegistrationPackageNET( (int)ErrorMsg, (int)error ), addrs);
+
+    //    Q_UNUSED(error);
+    //    Q_UNUSED(addrs);
 #endif
 }
 
@@ -427,7 +456,7 @@ void ESURegistrationEngine::processRegistrationRequest(bool accept, const QStrin
 
         if( accept ) {
             info.updateTime(); // Дата/время регистрации клиента
-            d->tableManager.addRecord(info);            
+            d->tableManager.addRecord(info);
 
             p.setSuccess();
             p.userData.enable = true;
@@ -442,7 +471,7 @@ void ESURegistrationEngine::processRegistrationRequest(bool accept, const QStrin
         }
 
         sendRegistrationMsg(p, address);
-        if( accept ) {            
+        if( accept ) {
             d->tableManager.syncRecord(info.address);
         }
         break;
@@ -473,7 +502,7 @@ void ESURegistrationEngine::processRegistrationRequest(bool accept, const QStrin
 #else
         sendRegistrationMsg(p, address);
 #endif
-        if( accept ) {            
+        if( accept ) {
             d->tableManager.syncRecord(info.address);
         }
         break;
@@ -641,7 +670,7 @@ void ESURegistrationEngine::onTaskTimeout()
 
             d->base->setCurrentMessage("Нет связи с регистраторами");
             d->base->clearCurrentOperation();
-//            d->ui->stopTaskTimer();
+            //            d->ui->stopTaskTimer();
             break;
 
         } else {
@@ -654,9 +683,9 @@ void ESURegistrationEngine::onTaskTimeout()
 
         bool contains = false;
 
-    #ifdef ESU_NET_PROTO_SERVER
+#ifdef ESU_NET_PROTO_SERVER
         contains = esuNetProto.discoverInterface().containsDevice(address);
-    #endif
+#endif
 
         if( contains )
         {
@@ -673,7 +702,7 @@ void ESURegistrationEngine::onTaskTimeout()
 
             // TODO: здесь запрос даннных
             // Продолжаем выполнять поставленную задачу
-            if( !d->base->isTaskStackEmpty() ) {                
+            if( !d->base->isTaskStackEmpty() ) {
                 d->_u.userTasks.enqueue(d->base->popTask());
                 qDebug() << Q_FUNC_INFO << " Current operation = " << d->base->currentTask();
                 Q_EMIT execUserRegistration();
@@ -691,7 +720,7 @@ void ESURegistrationEngine::onTaskTimeout()
             d->base->setCurrentMessage(msg);
 
             sendRegistrationMsg((const RegistrationPackageNET&)p, address);
-//            d->ui->startTaskTimer(20000); // 20 секунд
+            //            d->ui->startTaskTimer(20000); // 20 секунд
         }
 
         break;
@@ -738,7 +767,7 @@ void ESURegistrationEngine::processUserRegistration()
             }
             sendRegistrationMsg((const RegistrationPackageNET&)p, address);
 
-//            d->ui->startTaskTimer(20000); // 20 секунд
+            //            d->ui->startTaskTimer(20000); // 20 секунд
             return;
 
         } else {
@@ -778,9 +807,9 @@ void ESURegistrationEngine::processUserRegistration()
             if( !d->_u.registrationData.streetAddress.isEmpty() )
                 p.userData.streetAddress = d->_u.registrationData.streetAddress;
 
-            d->base->setCurrentMessage("Ожидание ответа регистраторов");      
+            d->base->setCurrentMessage("Ожидание ответа регистраторов");
             sendUserMsg(p);
-//            d->ui->startTaskTimer(d->timeout.registrationReply);
+            //            d->ui->startTaskTimer(d->timeout.registrationReply);
             //d->waitTimer.start(d->timeout.registrationReply);
 
             break;
@@ -815,7 +844,7 @@ void ESURegistrationEngine::processUserRegistration()
             d->base->setCurrentMessage("Ожидание ответа регистраторов");
 
             sendUserMsg(p);
-//            d->ui->startTaskTimer(d->timeout.registrationReply);
+            //            d->ui->startTaskTimer(d->timeout.registrationReply);
             break;
         }
         default:
@@ -868,8 +897,8 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
 
         if( !p.data.isEmpty() && QString(p.data) == "RQST_PROF" ) {
             if( d->isRegistered ) {
-               sendPckg.setUserData(true);
-               sendPckg.userData = d->_u.registrationData;
+                sendPckg.setUserData(true);
+                sendPckg.userData = d->_u.registrationData;
             }
         }
         sendRegistrationMsg(sendPckg, p.address);
@@ -905,7 +934,7 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
 
         } else break;
 
-//        d->ui->stopTaskTimer();
+        //        d->ui->stopTaskTimer();
 
         break;
     }
@@ -939,12 +968,12 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
         user.setTime(); // Дата и время запроса
         user.request = registration::RegistrationRequest;
         user.message = p.message;
-        user.address = QHostAddress(p.address);        
+        user.address = QHostAddress(p.address);
 
         d->_r.registrationQueries.insert( p.address, user );
 
         // Помещаем в очередь на регистрацию (обработку данных регистратором)
-//        d->ui->modelQueries.appendData(user);
+        //        d->ui->modelQueries.appendData(user);
 
         break;
     }
@@ -952,7 +981,7 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
     {
         // [КЛИЕНТ]: Получили уведомление о состоянии регистрации
         //d->waitTimer.stop();
-//        d->ui->stopTaskTimer();
+        //        d->ui->stopTaskTimer();
         d->base->clearTasks();
         d->base->setCurrentTask(ESURegistration::NoTasks);
 
@@ -960,14 +989,14 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
         {
             QString msg = "Регистрация успешна.\nПланшет зарегистрирован как:\n" + d->base->choosedRole();
             d->_u.registrationData = d->base->choosedData();
-            d->_u.registrationData.time = p.userData.time;            
+            d->_u.registrationData.time = p.userData.time;
             d->_u.registrationData.address = d->profileAddress;
             d->isRegistered = true;
             d->tableManager.addRecord(d->_u.registrationData);
 
             d->base->setRegistrationData(d->_u.registrationData);
 
-            d->base->setCurrentMessage(msg);           
+            d->base->setCurrentMessage(msg);
 
             d->base->setRegistrationState(ESURegistration::RegisteredState);
             d->base->setState(ESURegistration::SteadyState);
@@ -1087,7 +1116,7 @@ void ESURegistrationEngine::processErrorMessage(const RegistrationPackageNET &p)
         break;
     }
     case ESURegistration::RegistrationInProcessError:
-        d->base->setCurrentMessage("Регистрация уже в процессе...");        
+        d->base->setCurrentMessage("Регистрация уже в процессе...");
         break;
     default:
         break;
@@ -1109,7 +1138,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
     case UserChangeProfileRequestMsg:
     {
         // [РЕГИСТРАТОР]: Поступил запрос на смену профиля
-        if( !d->isRegistrar ) break;        
+        if( !d->isRegistrar ) break;
         if( !p.userData.enable ) break;
 
         if( d->_r.registrationQueries.contains(p.address) ) {
@@ -1140,11 +1169,11 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
                     errPkg.userData.role = rec.role;
                     errPkg.userData.name = rec.name;
 
-                    #ifdef ESU_REG_TEST                    
+#ifdef ESU_REG_TEST
                     sendRegistrarMsg(errPkg, "::1");
-                    #else
+#else
                     sendRegistrationMsg(errPkg, p.address);
-                    #endif                    
+#endif
 
                 } else {
                     // Планшет с таким именем отсутствует => обновляем адрес регистрации
@@ -1156,7 +1185,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
                     user.updateFlags = registration::AddressFlag;
                     user.message = "Обновление адреса регистрации";
                     d->_r.registrationQueries.insert( p.address, user );
-//                    d->ui->modelQueries.appendData(user); // UI
+                    //                    d->ui->modelQueries.appendData(user); // UI
                 }
             }
 
@@ -1216,7 +1245,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
             }
 
             d->_r.registrationQueries.insert( p.address, currentUser );
-//            d->ui->modelQueries.appendData(currentUser); // UI
+            //            d->ui->modelQueries.appendData(currentUser); // UI
             break;
 
         } else {
@@ -1229,7 +1258,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
     case UserChangeProfileReplyMsg:
     {
         // Ответ регистратора на запрос смены роли.
-//        d->ui->stopTaskTimer();
+        //        d->ui->stopTaskTimer();
         d->base->clearTasks();
         d->base->setCurrentTask(ESURegistration::NoTasks);
 
@@ -1264,7 +1293,7 @@ void ESURegistrationEngine::processChangeProfile(Message msg, const Registration
 
             d->base->setCurrentMessage(msg);
             d->base->setRegistrationState(ESURegistration::RegisteredState);
-            d->base->setState(ESURegistration::SteadyState);            
+            d->base->setState(ESURegistration::SteadyState);
             d->base->setError(ESURegistration::NoErrors);
 
             QMetaObject::invokeMethod(this, "saveConfiguration", Qt::QueuedConnection);

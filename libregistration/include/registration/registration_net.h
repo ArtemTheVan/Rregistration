@@ -2,12 +2,12 @@
 #define ESU_REGISTRATION_NET
 
 #ifdef ESU_NET_SYSTEM
-    #include "protomessageserver.h"
+#include "protomessageserver.h"
 
-    #ifdef esuNet
-        #undef esuNet
-    #endif
-    #define esuNet ProtoMessageServer::inst().registrationInterface()
+#ifdef esuNet
+#undef esuNet
+#endif
+#define esuNet ProtoMessageServer::inst().registrationInterface()
 #endif
 
 #endif // ESU_REGISTRATION_NET
