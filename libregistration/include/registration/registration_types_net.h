@@ -3,7 +3,7 @@
 
 #ifndef ESU_NET_PROTO_SERVER
 
-#include "global1.h"
+#include <Rregistration/global1.h>
 #include <QtCore/qlist.h>
 #include <QtCore/qhash.h>
 #include <QtNetwork/qhostaddress.h>

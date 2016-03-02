@@ -3,7 +3,7 @@
 
 #include <QtCore>
 
-#include <interfaces/i_singleton.h>
+#include <Rregistration/interfaces/i_singleton.h>
 #include "staff_structure.h"
 
 

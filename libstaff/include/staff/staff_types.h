@@ -1,7 +1,6 @@
 #ifndef STAFF_TYPES_H
 #define STAFF_TYPES_H
 
-#include <global1.h>
 #include <QtGlobal>
 #include <QtCore/qstring.h>
 #include <QtCore/qlist.h>
@@ -9,9 +8,10 @@
 #include <QVariant>
 #include <QPoint>
 #include <memory>
+#include <Rregistration/global1.h>
+
 
 using namespace std;
-
 
 // [ Адрес проживания (место жительства) ]
 /*

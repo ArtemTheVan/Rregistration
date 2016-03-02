@@ -6,7 +6,7 @@
 #include "registration_data.h"
 #include "registration_global.h"
 
-#include <interfaces/i_singleton.h>
+#include <Rregistration/interfaces/i_singleton.h>
 
 // TODO: Пока Синглтон-реализация.
 #define esuReg ESURegistration::instance()
@@ -110,11 +110,10 @@ protected:
     ~ESURegistration();
 
 public:
-    // [PROPERTIES NON-QML]:
+    // [PROPERTIES]:
     void setConfigurationFilePath(const QString& path);
 
 public:
-    // [PROPERTIES]:
     RegistrationState registrationState() const;
     void setRegistrationState(RegistrationState regState);
 
@@ -306,7 +305,7 @@ public Q_SLOTS:
     void rejectRegistrationAll();
 
 Q_SIGNALS:
-    // [ PROPERTIES ]:
+    // [PROPERTIES NON-QML]:
     void registrationStateChanged();
     void profileChanged();
     void isRegisteredChanged();
