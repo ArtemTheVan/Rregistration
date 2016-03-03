@@ -74,6 +74,7 @@ public:
     // [ User methods ]:
     bool checkRegistrator();
 
+    // Методы принятия или отклонения  регистратором запросов
     // [ Registrar methods ]:
     void processRegistrationRequest(bool accept, const QString& address);
     void processRegistrationRequests(bool accept);

@@ -82,3 +82,7 @@ libregistration/include/registration/registration_engine_p.h
 libregistration/include/registration/registration_engine.h
 libregistration/include/registration/registration_data.h
 libregistration/include/registration/registration.h
+libstorage/include/storage/abstractlocalstoragetable.h
+libstorage/include/storage/dictionarytable.h
+libstorage/include/storage/localstoragemanager.h
+libstorage/include/storage/varianttable.h

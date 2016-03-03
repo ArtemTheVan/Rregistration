@@ -27,7 +27,6 @@ void Test::run(int id, int val)
         return;
 
     NetDevice *netdev = NetDevice::GetNetDevice();
-
     NetRegistrator *netReg = netdev->getRegistrator(0);
 
     if(netReg==NULL)
@@ -46,12 +45,6 @@ void Test::run(int id, int val)
     //    void emitsendRegistrationMsg(RegistrationPackageNET, const QStringList &addrs=QStringList());
 
     qDebug() << root.nameFull();
-
-    esuReg->setChoosedRole("Н.1-МСО.1-МСВ");
-    esuReg->setChoosedName("Петрович");
-    esuReg->registerUser();
-
-    esuStaff->printDivisions();
 
     foreach (StaffDivision div, root.divisions()) {
         //        qDebug() << div.nameFull();
@@ -72,6 +65,12 @@ void Test::run(int id, int val)
             //            //            qDebug() <<"--"<< div2.toObject().dutyName();
         }
     }
+
+    esuReg->setChoosedRole("Н.1-МСО.1-МСВ");
+    esuReg->setChoosedName("Петрович");
+    esuReg->registerUser();
+
+    esuStaff->printDivisions();
 
     //    esuReg->registerUser();
 
