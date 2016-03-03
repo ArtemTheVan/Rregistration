@@ -26,7 +26,7 @@ echo "build for target $1"
 export DEFENVS="-DZKPK"
 export _MAINDIR_=`pwd`
 #export DEFNODEBUG="-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT -DNDEBUG -s"
-export DEFNODEBUG="-g -s"
+export DEFNODEBUG="-g"
 export _MAINNAME_="registration"
 #export DEFENVS="${DEFENVS} -DWPRF -DSERIALRADIO"
 

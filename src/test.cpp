@@ -8,14 +8,23 @@
 #include "test.h"
 
 
-void Test::showCurrentMessage()
+void RegStart::showCurrentMessage()
 {
     QString msg = esuReg->currentMessage();
 
     qDebug() <<__PRETTY_FUNCTION__<<msg;
 }
 
-void Test::run(int id, int val)
+void RegStart::registrationStateChanged()
+{
+    bool msg = esuReg->isRegistered();
+
+    qDebug() <<__PRETTY_FUNCTION__<<msg;
+
+    qDebug() <<__PRETTY_FUNCTION__<<" isRegistrar "<<esuReg->isRegistrar();
+}
+
+void RegStart::run(int id, int val)
 {
     qDebug() <<__PRETTY_FUNCTION__;
     qDebug() <<id;

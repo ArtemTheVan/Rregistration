@@ -56,8 +56,9 @@ void ESURegistrationEngine::setConfigurationFilePath(const QString &path)
 {
     if( d->configurationFile != path ) {
         d->configurationFile = path;
-        QFileInfo info(d->configurationFile);
-        d->configurationFile = info.fileName();
+        //закомментировал, из-за этого не находил конфиг
+        //        QFileInfo info(d->configurationFile);
+        //        d->configurationFile = info.fileName();
     }
 }
 // }}} [ PROPERTIES ]
@@ -248,12 +249,15 @@ bool ESURegistrationEngine::loadRegistrarList()
 
             if( data.isEmpty() ) break;
             fileDevice.setFileName( d->configurationFile );
+
+            //возможно здесь должен быть return, а не break?
             if( !fileDevice.open(QIODevice::ReadWrite | QIODevice::Truncate) ) break;
             fileDevice.write(data);
             fileDevice.flush();
             fileDevice.seek(0LL);
 
         } else {
+            //возможно здесь должен быть return, а не break?
             if( !fileDevice.open(QIODevice::ReadWrite) ) break;
         }
 

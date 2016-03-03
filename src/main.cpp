@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     QTextCodec::setCodecForCStrings( QTextCodec::codecForName("utf8") );
 
-    Test regStart;
+    RegStart regStart;
 
     QString PHOTO_DIR = "";
     QStringList netIfaces;
@@ -32,6 +32,8 @@ int main(int argc, char *argv[])
 
     QObject::connect(netdev, SIGNAL(connectionChanged(int, int)), &regStart, SLOT(run(int,int)));
     QObject::connect(netdev, SIGNAL(onReceivedData(RegistrationPackageNET)), esuReg->engine(), SLOT(onReceivedData(RegistrationPackageNET)));
+
+    QObject::connect(esuReg->engine(), SIGNAL(registrationStateChanged()), &regStart, SLOT(registrationStateChanged()));
 
     QObject::connect(esuReg->engine(), SIGNAL(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)), netdev, SLOT(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)));
     QObject::connect(esuReg->engine()->tableManager(), SIGNAL(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)), netdev, SLOT(emitsendRegistrationMsg(RegistrationPackageNET, QStringList)));

@@ -1,5 +1,5 @@
-#ifndef TEST_H
-#define TEST_H
+#ifndef REGSTART_H
+#define REGSTART_H
 
 
 //todo this macros for qt4 and etu
@@ -8,20 +8,21 @@
 #include <QObject>
 
 
-class Test: public QObject
+class RegStart: public QObject
 {
     Q_OBJECT
 
 public:
-    Test(): QObject(0)
+    RegStart(): QObject(0)
     {}
 
-    ~Test() {}
+    ~RegStart() {}
 
 public slots:
     void run(int id, int val);
     void showCurrentMessage();
 
+    void registrationStateChanged();
 };
 
 //#endif
