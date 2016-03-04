@@ -665,6 +665,15 @@ void ESURegistration::clearChoosedData()
 }
 
 
+/*!
+ * \brief Запросить полную синхронизацию
+ */
+void ESURegistration::requestRegistrationTableSync()
+{
+    d->engine.requestRegistrationTableSync();
+}
+
+
 void ESURegistration::acceptRegistrationData()
 {
     d->engine.registerCurrentData();
@@ -675,9 +684,33 @@ void ESURegistration::saveConfiguration()
 {
     d->engine.saveConfiguration();
 }
+
+
 void ESURegistration::registerProfile()
 {
     d->engine.registerProfile();
+}
+
+/*!
+ * \brief runRegistrationTableSync - Запустить полную синхронизацию
+ */
+void ESURegistration::runRegistrationTableSync()
+{
+    d->engine.runRegistrationTableSync();
+}
+
+
+void ESURegistration::processRequest(int indexRequest, bool accept)
+{
+    QString addr; // = d->ui->modelQueries.getAddress(indexRequest);
+    if( addr.isEmpty() ) {
+        qDebug() << Q_FUNC_INFO << " Error: empty address";
+        //d->ui->messageBox("Ошибка", "Пустой адрес отправителя");
+        return;
+    }
+
+    //d->ui->modelQueries.remove(indexRequest);
+    d->engine.processRegistrationRequest(accept, addr);
 }
 
 // [ REGISTRAR INTERFACE ]:
@@ -722,6 +755,16 @@ void ESURegistration::rejectRegistration(const QString &address)
 void ESURegistration::rejectRegistrationAll()
 {
     d->engine.processRegistrationRequests(false);
+}
+
+// [ GENERAL INTERFACE ]:
+
+/*!
+ * \brief clearRegistration - Сделать сброс регистрации
+ */
+void ESURegistration::clearRegistration()
+{
+    d->engine.clearRegistration();
 }
 
 // }}} [ BASE INTERFACE/QML ]

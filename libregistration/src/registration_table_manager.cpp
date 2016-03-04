@@ -219,7 +219,7 @@ bool ESURegistrationTableManager::removeRecordByAddress(const QHostAddress &addr
 {
     for( RegistrationTableData::iterator it = m_tableData.begin(); it != m_tableData.end(); ++it ) {
         if( it->address == address ) {
-            QString condition("role=%1");
+            QString condition("role=\'%1\'");
             condition = condition.arg(it->role);
             m_dbTable->remove(condition);
 
@@ -244,7 +244,7 @@ bool ESURegistrationTableManager::removeRecordByRole(const QString &role)
 {
     for( RegistrationTableData::iterator it = m_tableData.begin(); it != m_tableData.end(); ++it ) {
         if( it->role == role ) {
-            QString condition("role=%1");
+            QString condition("role=\'%1\'");
             condition = condition.arg(it->role);
             m_dbTable->remove(condition);
 
@@ -309,17 +309,18 @@ void ESURegistrationTableManager::syncAllData()
 {
     if( m_tableData.isEmpty() ) return;
 
+    RegistrationPackageNET p(ESURegistrationEngine::SyncRegistrationTableMsg);
     foreach( const RegistrationUserInfo& r, m_tableData )
     {
-        RegistrationPackageNET p(ESURegistrationEngine::SyncRegistrationTableMsg);
         RegistrationPackageDataNET record(r);
         p.addRecord(record);
+    }
+
 #ifdef ESU_NET_PROTO_SERVER
         esuNet.sendRegistrationMsg(p);
 #else
         emit emitsendRegistrationMsg(p);
 #endif
-    }
 
     m_lastSyncTime = std::time(0);
 }
@@ -327,26 +328,24 @@ void ESURegistrationTableManager::syncAllData()
 
 void ESURegistrationTableManager::updateData(const RegistrationTableData &updateData)
 {
-    if( updateData.isEmpty() ) return;
+    if( updateData.isEmpty() || !m_dbReady )
+        return;
 
     int index = 0;
-
-
     foreach( const RegistrationUserInfo& r, updateData )
     {
         QVariantMap record = __createDBRecord(r);
 
-        if( m_tableData.contains(r) ) {
+        if( m_tableData.contains(r) )
+        {
             index = m_tableData.indexOf(r);
-            if( m_tableData[index].time < r.time ) {
-                m_tableData[index] = r;
-                if( m_dbReady ) {
-                    QString condition("role=%1");
-                    condition = condition.arg(r.role);
-                    m_dbTable->updateRecord(record, condition);
-                    Q_EMIT contentUpdated();
-                }
-            }
+            m_tableData[index] = r;
+
+            QString condition("role=\'%1\'");
+            condition = condition.arg(r.role);
+            m_dbTable->updateRecord(record, condition);
+            Q_EMIT contentUpdated();
+
         } else {
             m_tableData.append(r);
             if( m_dbReady ) {
@@ -356,14 +355,14 @@ void ESURegistrationTableManager::updateData(const RegistrationTableData &update
         }
     }
 
-    m_lastSyncTime = time(0);
+    m_lastSyncTime = std::time(nullptr);
     Q_EMIT contentUpdated();
 }
 
 
 void ESURegistrationTableManager::updateData(const RegistrationPackageNET &p)
 {
-    if( !p.records.enable || p.records.recordsList.isEmpty() )
+    if( !p.records.enable || p.records.recordsList.isEmpty() || !m_dbReady )
         return;
 
     int index = 0, size = m_tableData.size();
@@ -374,23 +373,28 @@ void ESURegistrationTableManager::updateData(const RegistrationPackageNET &p)
     {
         RegistrationUserInfo rec = r;
 
-        for( index = 0; index < size; ++index ) {
-            if( m_tableData[index].address == r.netAddress &&
-                    m_tableData[index].time < r.time) {
+        for( index = 0; index < size; ++index )
+        {
+            if( m_tableData[index].address == r.netAddress )
+            {
                 contains = true;
                 m_tableData[index] = rec;
             }
         }
-        if( contains ) continue;
 
         QVariantMap record = __createDBRecord(rec);
-        m_tableData.append(rec);
-        if( m_dbReady ) {
+
+        if( !contains ) {
             m_dbTable->insert(record);
+        } else {
+            QString condition("role=\'%1\'");
+            condition = condition.arg(r.role);
+            m_dbTable->updateRecord(record, condition);
         }
         contains = false;
     }
 
+    m_lastSyncTime = std::time(nullptr);
     Q_EMIT contentUpdated();
 }
 
@@ -511,7 +515,7 @@ bool ESURegistrationTableManager::saveToLocalDB()
 
     foreach( const RegistrationUserInfo& r, m_tableData ) {
         QVariantMap record = __createDBRecord(r);
-        QString cond = QString("role=%1").arg(r.role);
+        QString cond = QString("role=\'%1\'").arg(r.role);
         if( !tableDb->containsRecord(cond) )
             tableDb->insert(record);
     }

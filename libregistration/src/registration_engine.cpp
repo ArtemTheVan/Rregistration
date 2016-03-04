@@ -209,14 +209,12 @@ void ESURegistrationEngine::saveConfiguration()
 void ESURegistrationEngine::clearConfiguration()
 {
     d->base->setRegistrationState(ESURegistration::UnregisteredState);
+    d->base->clearChoosedData();
     d->base->clearRegistrationData();
     d->_u.registrationData.clear();
 
 #ifdef ESU_APPLICATION
-    ESUSettings::set(ESUSettings::ProfileRegistered) = QVariant(d->isRegistered);
-    ESUSettings::set(ESUSettings::ProfileRole) = d->_u.registrationData.role;
-    ESUSettings::set(ESUSettings::ProfileName) = d->_u.registrationData.name;
-    ESUSettings::set(ESUSettings::ProfileRegistrationTime) = QVariant(0);
+    ESUSettings::clearSection(ESUSettings::Profile);
 #endif
 
     if( d->isRegistered ) {
@@ -234,7 +232,7 @@ bool ESURegistrationEngine::loadRegistrarList()
     QString addr;
     QDomDocument domDoc("RegistrarList");
     QDomElement rootElement;
-
+    QByteArray data;
 
     do {
         if( !QFile::exists(d->configurationFile) ) {
@@ -244,7 +242,7 @@ bool ESURegistrationEngine::loadRegistrarList()
             fileDevice.setFileName(":/mods/registration/conf/registration_config.xml");
 #endif
             if( !fileDevice.open(QIODevice::ReadOnly) ) break;
-            QByteArray data = fileDevice.readAll();
+            data = fileDevice.readAll();
             fileDevice.close();
 
             if( data.isEmpty() ) break;
@@ -261,7 +259,20 @@ bool ESURegistrationEngine::loadRegistrarList()
             if( !fileDevice.open(QIODevice::ReadWrite) ) break;
         }
 
-        if( !domDoc.setContent(fileDevice.readAll()) ) break;
+        data = fileDevice.readAll();
+        if( data.isEmpty() ) {
+            fileDevice.setFileName(":/mods/registration/conf/registration_config.xml");
+            if( !fileDevice.open(QIODevice::ReadOnly) ) break;
+            data = fileDevice.readAll();
+            fileDevice.close();
+
+            fileDevice.setFileName( d->configurationFile );
+            if( !fileDevice.open(QIODevice::ReadWrite | QIODevice::Truncate) ) break;
+            fileDevice.write(data);
+            fileDevice.close();
+        }
+
+        if( !domDoc.setContent( data ) ) break;
 
         rootElement = domDoc.firstChildElement("RegistrarList");
         if( rootElement.isNull() || !rootElement.hasChildNodes() ) break;
@@ -441,6 +452,15 @@ bool ESURegistrationEngine::checkRegistrator()
     return( false );
 }
 
+
+void ESURegistrationEngine::requestRegistrationTableSync()
+{
+    RegistrationPackageNET p;
+    p.msgType = (int)RequestRegistrationTableSyncMsg;
+    sendUserMsg(p);
+}
+
+
 // }}} [ USER METHODS ]
 // [ REGISTRAR METHODS ]: {{{
 
@@ -590,6 +610,12 @@ void ESURegistrationEngine::processRegistrationRequests(bool accept)
 }
 
 
+void ESURegistrationEngine::runRegistrationTableSync()
+{
+    d->tableManager.syncAllData();
+}
+
+
 void ESURegistrationEngine::registerCurrentData()
 {
     QString msg = "Планшет зарегистрирован как:\n";
@@ -611,6 +637,19 @@ void ESURegistrationEngine::registerCurrentData()
 }
 
 
+/*!
+ * \brief clearRegistration - Сделать сброс регистрации
+ */
+void ESURegistrationEngine::clearRegistration()
+{
+    clearConfiguration();
+
+    RegistrationPackageNET p;
+    p.msgType = (int)RegistrationRecordRemoveMsg;
+    sendRegistrationMsg(p);
+}
+
+
 void ESURegistrationEngine::registerProfile()
 {
     QString msg = "Планшет зарегистрирован как:\n" + d->base->choosedRole();
@@ -619,6 +658,8 @@ void ESURegistrationEngine::registerProfile()
     d->_u.registrationData.address = d->profileAddress;
     d->isRegistered = true;
     d->tableManager.addRecord(d->_u.registrationData);
+    qApp->processEvents();
+    d->tableManager.syncAllData();
 
     d->base->setRegistrationData(d->_u.registrationData);
 
@@ -1026,13 +1067,25 @@ void ESURegistrationEngine::onReceivedData(RegistrationPackageNET p)
         // [КЛИЕНТ - РЕГИСТРАТОР]: Синхронизация таблицы регистрации
         if( !p.records.enable || p.records.recordsList.isEmpty() )
             break;
+
         if( p.records.recordsList.size() == 1 ) {
             if( p.records.recordsList.first().netAddress == d->profileAddress )
                 break;
         }
+
         d->tableManager.updateData(p);
         Q_EMIT d->base->registrationTableUpdated();
 
+        break;
+    }
+    case RequestRegistrationTableSyncMsg:
+    {
+        d->tableManager.syncAllData();
+        break;
+    }
+    case RegistrationRecordRemoveMsg:
+    {
+        d->tableManager.removeRecordByAddress( p.address );
         break;
     }
     case UnknownMsg:

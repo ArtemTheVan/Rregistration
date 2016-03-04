@@ -27,10 +27,11 @@ public:
         RegistrarAddrRequestMsg, RegistrarAddrReplyMsg, RegistrarAddrNotifyMsg,
         // Регистрация пользователя
         UserRegistrationRequestMsg, UserRegistrationReplyMsg, CheckRegistrationMsg,
-        // Смена профиля (регистрации)
-        UserChangeProfileRequestMsg, UserChangeProfileReplyMsg,
+        // Смена профиля (регистрации) / Сброс регистрации
+        UserChangeProfileRequestMsg, UserChangeProfileReplyMsg, RegistrationRecordRemoveMsg,
         // Синхронизация данных (по сети)
-        SyncRegistrationTableMsg, SyncRegistrationTableAllMsg
+        SyncRegistrationTableMsg, SyncRegistrationTableAllMsg,
+        RequestRegistrationTableSyncMsg
     };
 
 public:
@@ -74,16 +75,24 @@ public:
     // [ User methods ]:
     bool checkRegistrator();
 
+    //! Запросить полную синхронизацию
+    void requestRegistrationTableSync();
+
     // Методы принятия или отклонения  регистратором запросов
     // [ Registrar methods ]:
     void processRegistrationRequest(bool accept, const QString& address);
     void processRegistrationRequests(bool accept);
 
+    //! brief runRegistrationTableSync - Запустить полную синхронизацию
+    void runRegistrationTableSync();
+
     // [ General methods ]:
     void registerCurrentData();
-    /*!
-     * \brief registerProfile - регистрация сервера (регистратора) с занесением в базу данных и синхронизацией
-     */
+
+    //! clearRegistration - Сделать сброс регистрации
+    void clearRegistration();
+
+    //! registerProfile - регистрация сервера (регистратора) с занесением в базу данных и синхронизацией
     void registerProfile();
 
 public Q_SLOTS:
