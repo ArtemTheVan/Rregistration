@@ -23,10 +23,11 @@ fi
 echo "build for target $1"
 #export DEFENVS="-DNPI"
 #export DEFENVS="-DKPP"
-export DEFENVS="-DZKPK"
+export DEFENVS="-DZKPK -DKPP"
 export _MAINDIR_=`pwd`
 #export DEFNODEBUG="-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT -DNDEBUG -s"
-export DEFNODEBUG="-g"
+#export DEFNODEBUG="-g"
+export DEFNODEBUG="-s"
 export _MAINNAME_="registration"
 #export DEFENVS="${DEFENVS} -DWPRF -DSERIALRADIO"
 
@@ -61,7 +62,7 @@ export _DEFARCH_="${1}"
 		export _QTDIR_="/usr/share/qt4"
 		export _QTMOC_="/usr/bin/moc-qt4"
 		#-fsanitize=undefined,address
-		export CXXFLAGSENVS="-pipe -O3 -W ${DEFNODEBUG} -fpermissive -Wformat -Wformat-security -Winit-self -Wempty-body -Winit-self -Wignored-qualifiers -Wformat-security"
+		export CXXFLAGSENVS="-pipe -O3 -W ${DEFNODEBUG} -Wformat -Wformat-security -Winit-self -Wempty-body -Winit-self -Wignored-qualifiers -Wformat-security"
 	fi
 	if [ "$1" == "arm" ]
 	then
@@ -72,7 +73,7 @@ export _DEFARCH_="${1}"
 		export _CROSSBIN_="arm-angstrom-linux-gnueabi"
 		export _QTDIR_="/home/programmer/projects/gcc-angstrom-arm-linux-gnueabi-4.5-2012.03_armv7a/sysroot"
 		export _QTMOC_="/usr/bin/moc-qt4"
-		export CXXFLAGSENVS="-pipe -O3 -Wall ${DEFNODEBUG} -fpermissive -march=armv7-a -mtune=cortex-a8 -mfpu=neon -D__ARM_ARCH_7__ -D__ARM_ARCH_7A__ -mfloat-abi=softfp -msoft-float -fexpensive-optimizations -frename-registers -fomit-frame-pointer -Wpragmas -mthumb-interwork -mthumb -ftree-vectorize -ffast-math -finline-functions"
+		export CXXFLAGSENVS="-pipe -O3 -Wall ${DEFNODEBUG} -march=armv7-a -mtune=cortex-a8 -mfpu=neon -D__ARM_ARCH_7__ -D__ARM_ARCH_7A__ -mfloat-abi=softfp -msoft-float -fexpensive-optimizations -frename-registers -fomit-frame-pointer -Wpragmas -mthumb-interwork -mthumb -ftree-vectorize -ffast-math -finline-functions"
 	fi
 
 	# build libs and plugins

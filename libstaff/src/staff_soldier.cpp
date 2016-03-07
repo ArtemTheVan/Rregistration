@@ -90,7 +90,8 @@ StaffCommander StaffSoldier::commander() const
     CHECK_D_RET(d_ptr, StaffCommander());
     Q_D(const StaffSoldier);
 
-    return(StaffCommander((StaffCommanderPrivate*)d->getCommander()));
+//    return(StaffCommander((StaffCommanderPrivate*)d->getCommander())); //todo
+    return(StaffCommander());
 }
 
 // }}} [ PROPERTIES ]
@@ -101,7 +102,8 @@ bool StaffSoldier::hasCommander() const
     CHECK_D_RET(d_ptr, false);
     Q_D(const StaffSoldier);
 
-    return(d->getCommander() != nullptr);
+//    return(d->getCommander() != nullptr); //todo
+    return(false); //todo
 }
 
 // }}} [ CHECK PROPERTIES ]

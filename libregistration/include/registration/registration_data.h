@@ -141,6 +141,7 @@ public:
     }
 
     RegistrationUserInfo& operator =(const RegistrationPackageNET& p);
+
     RegistrationUserInfo& operator =(const RegistrationPackageDataNET& p);
 
     friend inline bool operator ==(const RegistrationUserInfo& left, const RegistrationUserInfo& right) {

@@ -13,13 +13,10 @@ RegistrationUserInfo::RegistrationUserInfo(const RegistrationPackageNET &p)
     *this = p;
 }
 
-
 RegistrationUserInfo::RegistrationUserInfo(const RegistrationPackageDataNET &p)
 {
     *this = p;
 }
-
-
 
 RegistrationUserInfo& RegistrationUserInfo::operator =(const RegistrationPackageNET& p)
 {
@@ -40,7 +37,6 @@ RegistrationUserInfo& RegistrationUserInfo::operator =(const RegistrationPackage
 
     return(*this);
 }
-
 
 RegistrationUserInfo& RegistrationUserInfo::operator =(const RegistrationPackageDataNET& p)
 {

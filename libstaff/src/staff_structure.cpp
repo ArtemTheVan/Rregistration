@@ -82,7 +82,7 @@ StaffBaseUnit ESUStaffStructure::findUnitByName(const QString &name)
 {
 
     if( d->engine.nodes.contains(name) ) {
-        StaffBaseUnit unit = *((StaffBaseUnit *)&StaffObject((StaffObjectPrivate*)(d->engine.nodes[name]))); //todo
+        StaffBaseUnit unit;// = *((StaffBaseUnit *)&StaffObject((StaffObjectPrivate*)(d->engine.nodes[name]))); //todo
         return(unit);
     }
 

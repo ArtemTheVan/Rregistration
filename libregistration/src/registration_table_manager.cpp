@@ -264,12 +264,14 @@ void ESURegistrationTableManager::syncData()
 {
     if( m_tableData.isEmpty() ) return;
 
-    RegistrationTableData::iterator it;
-    foreach( const RegistrationUserInfo& r, m_tableData ) {
+    RegistrationTableData::iterator it = m_tableData.begin();
+    for( ; it != m_tableData.end(); ++it ) {
+        //        RegistrationTableData::iterator it;
+        //        foreach( const RegistrationUserInfo& r, m_tableData ) {
         if( it->time >= m_lastSyncTime ) {
             RegistrationPackageNET p(ESURegistrationEngine::SyncRegistrationTableMsg);
             RegistrationPackageDataNET record;
-            record = r;
+            record = *it;
             p.addRecord(record);
 #ifdef ESU_NET_PROTO_SERVER
             esuNet.sendRegistrationMsg(p);
@@ -317,9 +319,9 @@ void ESURegistrationTableManager::syncAllData()
     }
 
 #ifdef ESU_NET_PROTO_SERVER
-        esuNet.sendRegistrationMsg(p);
+    esuNet.sendRegistrationMsg(p);
 #else
-        emit emitsendRegistrationMsg(p);
+    emit emitsendRegistrationMsg(p);
 #endif
 
     m_lastSyncTime = std::time(0);
