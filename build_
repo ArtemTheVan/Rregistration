@@ -27,7 +27,7 @@ export DEFENVS="-DZKPK -DKPP"
 export _MAINDIR_=`pwd`
 #export DEFNODEBUG="-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT -DNDEBUG -s"
 #export DEFNODEBUG="-g"
-export DEFNODEBUG="-s"
+export DEFNODEBUG="-DQT_NO_DEBUG -DNDEBUG -s"
 export _MAINNAME_="registration"
 #export DEFENVS="${DEFENVS} -DWPRF -DSERIALRADIO"
 
@@ -57,6 +57,7 @@ export _DEFARCH_="${1}"
 
 	if [ "$1" == "x86" ]
 	then
+		export DEFNODEBUG="-g"
 		echo "building for $1"
 		export DEFENVS="-DHOST ${DEFENVS}"
 		export _QTDIR_="/usr/share/qt4"

@@ -258,7 +258,7 @@ bool ESURegistrationEngine::loadRegistrarList()
             //возможно здесь должен быть return, а не break?
             if( !fileDevice.open(QIODevice::ReadWrite) ) break;
         }
-
+        qDebug() << __PRETTY_FUNCTION__ <<" configurationFile: "<<fileDevice.fileName();
         data = fileDevice.readAll();
         if( data.isEmpty() ) {
             fileDevice.setFileName(":/mods/registration/conf/registration_config.xml");
@@ -380,6 +380,18 @@ void ESURegistrationEngine::sendRegistrationMsg(const RegistrationPackageNET &p,
 #ifdef ESU_NET_PROTO_SERVER
     esuNet.sendRegistrationMsg(p, addr);
 #else
+    if(addr.isEmpty())
+    {
+        if(d!=nullptr)
+        {
+            if(!d->registrarMain.address.toString().isEmpty()) //Отправляем регистратору
+            {
+                emit emitsendRegistrationMsg(p, QStringList(d->registrarMain.address.toString()));
+                return;
+            }
+        }
+    }
+
     emit emitsendRegistrationMsg(p, QStringList(addr));
 
     //    Q_UNUSED(p);
@@ -1136,6 +1148,14 @@ void ESURegistrationEngine::processErrorMessage(const RegistrationPackageNET &p)
         d->base->setCurrentMessage("Планшет уже зарегистрирован.");
         d->_u.tempData = p;
 
+        if(!d->isRegistered)
+        {
+            d->isRegistered = true; // Если уже зарегистрирован, то тогда эта переменная должна быть истинной
+
+            // Передаем состояние в ESURegistration
+            d->base->setRegistrationState(ESURegistration::RegisteredState);
+        }
+
         bool acceptRole = false;
         if( d->isRegistered ) {
             msg = QString("Планшет уже зарегестрирован как %1").arg(p.userData.role);
@@ -1147,7 +1167,7 @@ void ESURegistrationEngine::processErrorMessage(const RegistrationPackageNET &p)
                 acceptRole = true;
             }
         } else {
-            msg = QString("Планшет уже зарегестрирован как %1").arg(p.userData.role);
+            msg = QString("Планшет уже зарегистрирован как %1").arg(p.userData.role);
             if( !p.userData.name.isEmpty() ) {
                 msg += QString(" : %2").arg(p.userData.name);
             }
