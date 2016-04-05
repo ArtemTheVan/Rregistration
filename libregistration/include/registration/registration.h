@@ -301,6 +301,7 @@ public Q_SLOTS:
 
     //! Обработка таблицы запросов регистратором
     void processRequest(int indexRequest, bool accept);
+    bool processRequest(const QString &addr, bool accept);
 
     // OLD
 

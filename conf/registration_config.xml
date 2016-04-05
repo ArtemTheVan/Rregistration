@@ -6,7 +6,7 @@
     <!--<Registrar>fe80::280:e102:1a:b8ce</Registrar>-->
     <!--<Registrar>fe80::280:e102:1a:cd87</Registrar>-->
     <Registrar>fe80::a00:27ff:fe27:2baf</Registrar>
-    <Registrar current="true">fe80::280:e102:1a:c9dd</Registrar>-->
-    <!--<Registrar current="true">fe80::280:e102:1a:ca33</Registrar>-->
-    <!--<Registrar current="true">fe80::a00:27ff:fe27:2baf</Registrar>-->
+    <Registrar>fe80::280:e102:1a:c9dd</Registrar>
+    <Registrar>fe80::280:e102:1a:ca33</Registrar>
+    <Registrar current="true">fe80::280:e102:1a:ca1f</Registrar>
 </RegistrarList>

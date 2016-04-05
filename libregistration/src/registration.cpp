@@ -703,14 +703,26 @@ void ESURegistration::runRegistrationTableSync()
 void ESURegistration::processRequest(int indexRequest, bool accept)
 {
     QString addr; // = d->ui->modelQueries.getAddress(indexRequest);
+
+    if(processRequest(addr, accept))
+    {
+        //d->ui->modelQueries.remove(indexRequest);
+    } else
+    {
+        //d->ui->messageBox("Ошибка", "Пустой адрес отправителя");
+    }
+}
+
+bool ESURegistration::processRequest(const QString &addr, bool accept)
+{
     if( addr.isEmpty() ) {
         qDebug() << Q_FUNC_INFO << " Error: empty address";
-        //d->ui->messageBox("Ошибка", "Пустой адрес отправителя");
-        return;
+        return false;
     }
 
-    //d->ui->modelQueries.remove(indexRequest);
     d->engine.processRegistrationRequest(accept, addr);
+
+    return true;
 }
 
 // [ REGISTRAR INTERFACE ]:

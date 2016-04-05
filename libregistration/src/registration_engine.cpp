@@ -472,6 +472,10 @@ void ESURegistrationEngine::requestRegistrationTableSync()
     sendUserMsg(p);
 }
 
+void ESURegistrationEngine::getRegistrationQueries(QHash<QString, RegistrationUserInfo> &ret)
+{
+    ret = d->_r.registrationQueries;
+}
 
 // }}} [ USER METHODS ]
 // [ REGISTRAR METHODS ]: {{{

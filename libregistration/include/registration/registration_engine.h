@@ -78,6 +78,8 @@ public:
     //! Запросить полную синхронизацию
     void requestRegistrationTableSync();
 
+    void getRegistrationQueries(QHash<QString, RegistrationUserInfo> &);
+
     // Методы принятия или отклонения  регистратором запросов
     // [ Registrar methods ]:
     void processRegistrationRequest(bool accept, const QString& address);

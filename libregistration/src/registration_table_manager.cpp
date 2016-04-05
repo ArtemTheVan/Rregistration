@@ -311,9 +311,13 @@ void ESURegistrationTableManager::syncAllData()
 {
     if( m_tableData.isEmpty() ) return;
 
+    QStringList sl;
     RegistrationPackageNET p(ESURegistrationEngine::SyncRegistrationTableMsg);
     foreach( const RegistrationUserInfo& r, m_tableData )
     {
+        qDebug() <<__func__<<" "<< r.address;
+        if(!r.address.isNull())
+            sl.append(r.address.toString());
         RegistrationPackageDataNET record(r);
         p.addRecord(record);
     }
@@ -321,7 +325,7 @@ void ESURegistrationTableManager::syncAllData()
 #ifdef ESU_NET_PROTO_SERVER
     esuNet.sendRegistrationMsg(p);
 #else
-    emit emitsendRegistrationMsg(p);
+    emit emitsendRegistrationMsg(p, sl);
 #endif
 
     m_lastSyncTime = std::time(0);
